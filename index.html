@@ -623,6 +623,80 @@
             background: #aaa;
         }
 
+        .transcript-upload-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+
+        .transcript-container {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+
+        .transcript-list {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .transcript-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .transcript-list::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .transcript-list::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+
+        .transcript-item {
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .transcript-item:hover {
+            background: #1a1a1a;
+            border-left-color: #666;
+        }
+
+        .transcript-item.active {
+            background: #1a1a1a;
+            border-left-color: #fff;
+        }
+
+        .transcript-time {
+            font-size: 11px;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .transcript-text {
+            font-size: 13px;
+            color: #ccc;
+            line-height: 1.4;
+        }
+
+        .transcript-item.active .transcript-time {
+            color: #fff;
+        }
+
+        .transcript-item.active .transcript-text {
+            color: #fff;
+        }
+
         @media (max-width: 1000px) {
             .container {
                 grid-template-columns: 1fr;
@@ -665,9 +739,10 @@
 
             <div class="landing-card">
                 <h3>Load Existing Session</h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Select a folder containing both the session JSON file and the video file</p>
                 <div class="session-section">
-                    <button class="load-session-btn" id="landingLoadBtn">Load Session File</button>
-                    <input type="file" id="landingSessionFile" accept=".json" style="display: none;">
+                    <button class="load-session-btn" id="landingLoadBtn">Load Session Folder</button>
+                    <input type="file" id="landingSessionFolder" webkitdirectory directory multiple style="display: none;">
                 </div>
 
                 <div class="recent-sessions" id="recentSessions">
@@ -723,6 +798,17 @@
 
                 <div class="video-timeline-markers" id="timelineMarkers"></div>
 
+                <div class="transcript-upload-section">
+                    <input type="file" id="transcriptFile" accept=".json" style="display: none;">
+                    <button id="uploadTranscriptBtn">Upload Transcript (Optional)</button>
+                    <span id="transcriptStatus" style="font-size: 12px; color: #666; margin-left: 10px;"></span>
+                </div>
+
+                <div class="transcript-container" id="transcriptContainer" style="display: none;">
+                    <h3 style="font-size: 14px; margin-bottom: 10px; color: #aaa;">Transcript</h3>
+                    <div class="transcript-list" id="transcriptList"></div>
+                </div>
+
                 <div class="export-section">
                     <button id="exportBtn">Export JSON</button>
                     <button id="exportPdfBtn">Export PDF</button>
@@ -740,6 +826,8 @@
         let autoSaveInterval = null;
         let hasUnsavedChanges = false;
         let pendingSessionData = null; // For session loading flow
+        let transcript = null; // Store transcript data
+        let currentActiveTranscriptIndex = null;
 
         // Page Elements
         const landingPage = document.getElementById('landingPage');
@@ -750,7 +838,7 @@
         const landingVideoFile = document.getElementById('landingVideoFile');
         const uploadVideoBtn = document.getElementById('uploadVideoBtn');
         const landingLoadBtn = document.getElementById('landingLoadBtn');
-        const landingSessionFile = document.getElementById('landingSessionFile');
+        const landingSessionFolder = document.getElementById('landingSessionFolder');
         const recentSessionsList = document.getElementById('recentSessionsList');
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
@@ -767,6 +855,11 @@
         const timelineMarkers = document.getElementById('timelineMarkers');
         const headerFilename = document.getElementById('headerFilename');
         const newSessionBtn = document.getElementById('newSessionBtn');
+        const uploadTranscriptBtn = document.getElementById('uploadTranscriptBtn');
+        const transcriptFile = document.getElementById('transcriptFile');
+        const transcriptStatus = document.getElementById('transcriptStatus');
+        const transcriptContainer = document.getElementById('transcriptContainer');
+        const transcriptList = document.getElementById('transcriptList');
 
         // ===== PAGE TRANSITION FUNCTIONS =====
         function showLandingPage() {
@@ -810,7 +903,7 @@
         // ===== LANDING PAGE FUNCTIONS =====
 
         // Handle video upload
-        function handleVideoUpload(file) {
+        function handleVideoUpload(file, skipPageTransition = false) {
             if (!file) return;
 
             videoFile = file;
@@ -825,8 +918,10 @@
                 pendingSessionData = null;
             }
 
-            showNoteTakingPage();
-            startAutoSave();
+            if (!skipPageTransition) {
+                showNoteTakingPage();
+                startAutoSave();
+            }
         }
 
         // Drag and drop handlers
@@ -870,31 +965,47 @@
 
         // Load session button
         landingLoadBtn.addEventListener('click', () => {
-            landingSessionFile.click();
+            landingSessionFolder.click();
         });
 
-        landingSessionFile.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        landingSessionFolder.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
 
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-                try {
-                    const sessionData = JSON.parse(event.target.result);
+            // Find JSON session file
+            const sessionFile = files.find(f => f.name.endsWith('.json'));
+            if (!sessionFile) {
+                alert('Error: No JSON session file found in the selected folder.');
+                return;
+            }
 
-                    // Store session data and prompt for video
-                    pendingSessionData = sessionData;
+            // Find video file
+            const videoFile = files.find(f => f.type.startsWith('video/'));
+            if (!videoFile) {
+                alert('Error: No video file found in the selected folder.');
+                return;
+            }
 
-                    // Prompt user to upload video
-                    alert(`Session loaded! Now please upload the video file:\n${sessionData.videoFileName}`);
-                    landingVideoFile.click();
+            try {
+                // Read session JSON
+                const sessionText = await sessionFile.text();
+                const sessionData = JSON.parse(sessionText);
 
-                } catch (error) {
-                    alert('Error loading session file: ' + error.message);
-                    console.error(error);
-                }
-            };
-            reader.readAsText(file);
+                // Load the video first (skip page transition)
+                handleVideoUpload(videoFile, true);
+
+                // Then load the session data after video is set up
+                setTimeout(() => {
+                    loadSessionData(sessionData);
+                    // Now transition to note-taking page and start auto-save
+                    showNoteTakingPage();
+                    startAutoSave();
+                }, 100);
+
+            } catch (error) {
+                alert('Error loading session: ' + error.message);
+                console.error(error);
+            }
         });
 
         // Load session data into the app
@@ -963,6 +1074,8 @@
                     const sessionId = parseInt(item.getAttribute('data-session-id'));
                     const session = sessions.find(s => s.id === sessionId);
                     if (session) {
+                        // Load the session directly from stored data
+                        // First, prompt for video file
                         pendingSessionData = session.data;
                         alert(`Loading session for:\n${session.videoName}\n\nPlease upload the video file.`);
                         landingVideoFile.click();
@@ -1050,6 +1163,9 @@
 
             // Find the note closest to current time
             highlightActiveNote(currentMs);
+
+            // Highlight active transcript segment
+            highlightActiveTranscript(currentMs);
         });
 
         // Highlight the note closest to current video time
@@ -1464,6 +1580,123 @@
                 addNoteBtn.click();
             }
         });
+
+        // ===== TRANSCRIPT FUNCTIONALITY =====
+
+        // Upload transcript button click
+        uploadTranscriptBtn.addEventListener('click', () => {
+            transcriptFile.click();
+        });
+
+        // Handle transcript file upload
+        transcriptFile.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+
+                // Extract transcription array from the JSON structure
+                if (data.transcription && Array.isArray(data.transcription)) {
+                    transcript = data.transcription;
+                    renderTranscript();
+                    transcriptStatus.textContent = `✓ Loaded ${transcript.length} segments`;
+                    transcriptStatus.style.color = '#4ade80';
+                } else {
+                    throw new Error('Invalid transcript format');
+                }
+            } catch (error) {
+                alert('Error loading transcript: ' + error.message);
+                transcriptStatus.textContent = '✗ Error loading transcript';
+                transcriptStatus.style.color = '#ef4444';
+            }
+        });
+
+        // Render transcript segments
+        function renderTranscript() {
+            if (!transcript || transcript.length === 0) {
+                transcriptContainer.style.display = 'none';
+                return;
+            }
+
+            transcriptContainer.style.display = 'block';
+            transcriptList.innerHTML = '';
+
+            transcript.forEach((segment, index) => {
+                const item = document.createElement('div');
+                item.className = 'transcript-item';
+                item.setAttribute('data-transcript-index', index);
+                item.setAttribute('data-from-ms', segment.offsets.from);
+                item.setAttribute('data-to-ms', segment.offsets.to);
+
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'transcript-time';
+                timeDiv.textContent = segment.timestamps.from;
+
+                const textDiv = document.createElement('div');
+                textDiv.className = 'transcript-text';
+                textDiv.textContent = segment.text.trim();
+
+                // Click to seek
+                item.addEventListener('click', () => {
+                    videoPlayer.currentTime = segment.offsets.from / 1000;
+                    videoPlayer.play();
+                });
+
+                item.appendChild(timeDiv);
+                item.appendChild(textDiv);
+                transcriptList.appendChild(item);
+            });
+        }
+
+        // Highlight active transcript segment
+        function highlightActiveTranscript(currentMs) {
+            if (!transcript || transcript.length === 0) return;
+
+            // Find the segment that contains the current time
+            let activeIndex = null;
+            for (let i = 0; i < transcript.length; i++) {
+                const segment = transcript[i];
+                if (currentMs >= segment.offsets.from && currentMs < segment.offsets.to) {
+                    activeIndex = i;
+                    break;
+                }
+            }
+
+            // Update active state if changed
+            if (activeIndex !== currentActiveTranscriptIndex) {
+                currentActiveTranscriptIndex = activeIndex;
+
+                // Remove previous active class
+                document.querySelectorAll('.transcript-item.active').forEach(el => {
+                    el.classList.remove('active');
+                });
+
+                // Add active class to current segment
+                if (activeIndex !== null) {
+                    const activeElement = document.querySelector(`[data-transcript-index="${activeIndex}"]`);
+                    if (activeElement) {
+                        activeElement.classList.add('active');
+
+                        // Auto-scroll to keep active segment visible
+                        const container = transcriptList;
+                        const elementTop = activeElement.offsetTop;
+                        const elementBottom = elementTop + activeElement.offsetHeight;
+                        const containerTop = container.scrollTop;
+                        const containerBottom = containerTop + container.clientHeight;
+
+                        // Only scroll if the element is not fully visible
+                        if (elementTop < containerTop || elementBottom > containerBottom) {
+                            activeElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        }
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>
