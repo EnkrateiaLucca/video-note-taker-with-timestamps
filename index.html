@@ -428,6 +428,12 @@
             margin-bottom: 10px;
             transition: all 0.3s ease;
             position: relative;
+            cursor: pointer;
+        }
+
+        .note-item:hover {
+            background: #111;
+            border-color: #555;
         }
 
         .note-item.active {
@@ -1259,6 +1265,23 @@
                 noteItem.className = 'note-item';
                 noteItem.setAttribute('data-note-id', note.id);
 
+                // Add click handler to entire note item for seeking
+                noteItem.addEventListener('click', (e) => {
+                    // Don't seek if clicking on interactive elements
+                    if (e.target.tagName === 'BUTTON' ||
+                        e.target.tagName === 'A' ||
+                        e.target.classList.contains('note-text') ||
+                        e.target.classList.contains('note-text-editable')) {
+                        return;
+                    }
+
+                    // Only seek if this is a timestamped note
+                    if (note.type === 'timestamped' && note.timestampMs != null) {
+                        videoPlayer.currentTime = note.timestampMs / 1000;
+                        videoPlayer.play();
+                    }
+                });
+
                 // Timestamp or type label
                 if (note.type === 'free' || note.timestamp === null) {
                     const typeLabel = document.createElement('span');
@@ -1285,14 +1308,16 @@
                 const editBtn = document.createElement('button');
                 editBtn.className = 'edit-btn';
                 editBtn.textContent = 'Edit';
-                editBtn.addEventListener('click', () => {
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent note item click
                     editNote(note, noteItem);
                 });
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-btn';
                 deleteBtn.textContent = 'Delete';
-                deleteBtn.addEventListener('click', () => {
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent note item click
                     notes = notes.filter(n => n.id !== note.id);
                     renderNotes();
                 });
