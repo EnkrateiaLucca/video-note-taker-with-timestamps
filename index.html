@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Note Taker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        .notes-panel {
+            grid-column: 1;
+        }
+
+        .video-panel {
+            grid-column: 2;
+        }
+
+        h1, h2 {
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 24px;
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+
+        video {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .upload-section {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            background: #000;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"]::file-selector-button {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: #ddd;
+        }
+
+        .note-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background: #ddd;
+        }
+
+        button:disabled {
+            background: #444;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .notes-list {
+            margin-top: 20px;
+        }
+
+        .note-item {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .note-timestamp {
+            color: #888;
+            font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .note-timestamp:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .note-text {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .delete-btn {
+            background: transparent;
+            color: #888;
+            padding: 4px 8px;
+            font-size: 12px;
+            margin-top: 8px;
+            border: 1px solid #444;
+        }
+
+        .delete-btn:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        .edit-btn {
+            background: transparent;
+            color: #888;
+            padding: 4px 8px;
+            font-size: 12px;
+            margin-top: 8px;
+            margin-right: 8px;
+            border: 1px solid #444;
+        }
+
+        .edit-btn:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        .note-text-editable {
+            background: #000;
+            border: 1px solid #666;
+            border-radius: 3px;
+            padding: 8px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            width: 100%;
+            min-height: 60px;
+            resize: vertical;
+            margin: 5px 0;
+        }
+
+        .save-edit-btn {
+            background: #fff;
+            color: #000;
+            padding: 4px 12px;
+            font-size: 12px;
+            margin-top: 8px;
+            margin-right: 8px;
+        }
+
+        .cancel-edit-btn {
+            background: transparent;
+            color: #888;
+            padding: 4px 12px;
+            font-size: 12px;
+            margin-top: 8px;
+            border: 1px solid #444;
+        }
+
+        .note-type-label {
+            display: inline-block;
+            background: #333;
+            color: #888;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+        }
+
+        .button-group {
+            margin-bottom: 10px;
+        }
+
+        .button-group button {
+            margin-right: 10px;
+        }
+
+        .export-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        .current-time {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .info-message {
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Video Note Taker</h1>
+
+        <div class="panel notes-panel">
+            <h2>Notes</h2>
+
+            <div class="current-time" id="currentTime">Current time: 00:00:00</div>
+
+            <textarea
+                class="note-input"
+                id="noteInput"
+                placeholder="Type your note here..."
+                disabled
+            ></textarea>
+
+            <div class="button-group">
+                <button id="addNoteBtn" disabled>Add Note at Current Time</button>
+                <button id="addFreeNoteBtn" disabled>Add Note (No Timestamp)</button>
+            </div>
+
+            <div class="notes-list" id="notesList"></div>
+
+            <div class="export-section">
+                <button id="exportBtn" disabled>Export JSON</button>
+                <button id="exportPdfBtn" disabled>Export PDF</button>
+                <button id="loadBtn">Load Session</button>
+                <input type="file" id="loadFile" accept=".json" style="display: none;">
+            </div>
+        </div>
+
+        <div class="panel video-panel">
+            <h2>Video & Transcript</h2>
+
+            <div class="upload-section">
+                <label for="videoFile">Upload Video:</label>
+                <input type="file" id="videoFile" accept="video/*">
+
+                <label for="transcriptFile">Upload Transcript (JSON):</label>
+                <input type="file" id="transcriptFile" accept=".json">
+            </div>
+
+            <video id="videoPlayer" controls></video>
+
+            <div class="info-message" id="infoMessage">
+                Upload a video and its transcript to get started.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let transcript = null;
+        let notes = [];
+        let videoFile = null;
+        let transcriptFileName = null;
+
+        // Elements
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoFileInput = document.getElementById('videoFile');
+        const transcriptFileInput = document.getElementById('transcriptFile');
+        const noteInput = document.getElementById('noteInput');
+        const addNoteBtn = document.getElementById('addNoteBtn');
+        const addFreeNoteBtn = document.getElementById('addFreeNoteBtn');
+        const notesList = document.getElementById('notesList');
+        const exportBtn = document.getElementById('exportBtn');
+        const exportPdfBtn = document.getElementById('exportPdfBtn');
+        const loadBtn = document.getElementById('loadBtn');
+        const loadFileInput = document.getElementById('loadFile');
+        const currentTimeDisplay = document.getElementById('currentTime');
+        const infoMessage = document.getElementById('infoMessage');
+
+        // Format milliseconds to HH:MM:SS
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Update current time display
+        videoPlayer.addEventListener('timeupdate', () => {
+            const currentMs = videoPlayer.currentTime * 1000;
+            currentTimeDisplay.textContent = `Current time: ${formatTime(currentMs)}`;
+        });
+
+        // Handle video file upload
+        videoFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                videoFile = file;
+                const url = URL.createObjectURL(file);
+                videoPlayer.src = url;
+                checkReady();
+            }
+        });
+
+        // Handle transcript file upload
+        transcriptFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                transcriptFileName = file.name;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        transcript = JSON.parse(event.target.result);
+                        checkReady();
+                    } catch (error) {
+                        alert('Error parsing transcript JSON file');
+                        console.error(error);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Check if both files are loaded
+        function checkReady() {
+            if (videoFile && transcript) {
+                noteInput.disabled = false;
+                addNoteBtn.disabled = false;
+                addFreeNoteBtn.disabled = false;
+                exportBtn.disabled = false;
+                exportPdfBtn.disabled = false;
+                infoMessage.textContent = 'Ready! Click on the video timeline or use the controls, then add notes.';
+                infoMessage.style.background = '#1a3a1a';
+                infoMessage.style.borderColor = '#2a4a2a';
+            }
+        }
+
+        // Add note with timestamp
+        addNoteBtn.addEventListener('click', () => {
+            const noteText = noteInput.value.trim();
+            if (!noteText) {
+                alert('Please enter a note');
+                return;
+            }
+
+            const currentMs = Math.floor(videoPlayer.currentTime * 1000);
+
+            const note = {
+                timestamp: formatTime(currentMs),
+                timestampMs: currentMs,
+                text: noteText,
+                id: Date.now(),
+                type: 'timestamped',
+                createdAt: Date.now()
+            };
+
+            notes.push(note);
+            notes.sort((a, b) => {
+                if (a.timestampMs === b.timestampMs) {
+                    return a.createdAt - b.createdAt;
+                }
+                return a.timestampMs - b.timestampMs;
+            });
+
+            noteInput.value = '';
+            renderNotes();
+        });
+
+        // Add free note without timestamp
+        addFreeNoteBtn.addEventListener('click', () => {
+            const noteText = noteInput.value.trim();
+            if (!noteText) {
+                alert('Please enter a note');
+                return;
+            }
+
+            const currentMs = Math.floor(videoPlayer.currentTime * 1000);
+
+            const note = {
+                timestamp: null,
+                timestampMs: currentMs,
+                text: noteText,
+                id: Date.now(),
+                type: 'free',
+                createdAt: Date.now()
+            };
+
+            notes.push(note);
+            notes.sort((a, b) => {
+                if (a.timestampMs === b.timestampMs) {
+                    return a.createdAt - b.createdAt;
+                }
+                return a.timestampMs - b.timestampMs;
+            });
+
+            noteInput.value = '';
+            renderNotes();
+        });
+
+        // Edit note
+        function editNote(note, noteItem) {
+            const noteTextDiv = noteItem.querySelector('.note-text');
+            const editBtn = noteItem.querySelector('.edit-btn');
+            const deleteBtn = noteItem.querySelector('.delete-btn');
+
+            const textarea = document.createElement('textarea');
+            textarea.className = 'note-text-editable';
+            textarea.value = note.text;
+
+            const saveBtn = document.createElement('button');
+            saveBtn.className = 'save-edit-btn';
+            saveBtn.textContent = 'Save';
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'cancel-edit-btn';
+            cancelBtn.textContent = 'Cancel';
+
+            saveBtn.addEventListener('click', () => {
+                const newText = textarea.value.trim();
+                if (newText) {
+                    note.text = newText;
+                    renderNotes();
+                }
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                renderNotes();
+            });
+
+            noteTextDiv.replaceWith(textarea);
+            editBtn.replaceWith(saveBtn);
+            deleteBtn.replaceWith(cancelBtn);
+        }
+
+        // Render notes
+        function renderNotes() {
+            notesList.innerHTML = '';
+
+            if (notes.length === 0) {
+                notesList.innerHTML = '<div class="info-message">No notes yet. Add your first note above!</div>';
+                return;
+            }
+
+            notes.forEach(note => {
+                const noteItem = document.createElement('div');
+                noteItem.className = 'note-item';
+
+                // Timestamp or type label
+                if (note.type === 'free' || note.timestamp === null) {
+                    const typeLabel = document.createElement('span');
+                    typeLabel.className = 'note-type-label';
+                    typeLabel.textContent = 'note';
+                    noteItem.appendChild(typeLabel);
+                } else {
+                    const timestampLink = document.createElement('a');
+                    timestampLink.className = 'note-timestamp';
+                    timestampLink.href = '#';
+                    timestampLink.textContent = `[${note.timestamp}]`;
+                    timestampLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        videoPlayer.currentTime = note.timestampMs / 1000;
+                        videoPlayer.play();
+                    });
+                    noteItem.appendChild(timestampLink);
+                }
+
+                const noteText = document.createElement('div');
+                noteText.className = 'note-text';
+                noteText.textContent = note.text;
+
+                const editBtn = document.createElement('button');
+                editBtn.className = 'edit-btn';
+                editBtn.textContent = 'Edit';
+                editBtn.addEventListener('click', () => {
+                    editNote(note, noteItem);
+                });
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.addEventListener('click', () => {
+                    notes = notes.filter(n => n.id !== note.id);
+                    renderNotes();
+                });
+
+                noteItem.appendChild(noteText);
+                noteItem.appendChild(editBtn);
+                noteItem.appendChild(deleteBtn);
+                notesList.appendChild(noteItem);
+            });
+        }
+
+        // Export session as JSON
+        exportBtn.addEventListener('click', () => {
+            const session = {
+                videoFileName: videoFile.name,
+                transcriptFileName: transcriptFileName,
+                notes: notes,
+                exportDate: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(session, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `notes_${videoFile.name.replace(/\.[^/.]+$/, '')}_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Export as PDF
+        exportPdfBtn.addEventListener('click', () => {
+            const title = videoFile ? videoFile.name : 'Video Notes';
+            const dateStr = new Date().toLocaleDateString();
+
+            let content = `VIDEO NOTES\n\n`;
+            content += `Video: ${videoFile ? videoFile.name : 'N/A'}\n`;
+            content += `Date: ${dateStr}\n`;
+            content += `Total Notes: ${notes.length}\n\n`;
+            content += `${'='.repeat(80)}\n\n`;
+
+            notes.forEach((note, index) => {
+                if (note.type === 'free' || note.timestamp === null) {
+                    content += `${index + 1}. [NOTE]\n`;
+                } else {
+                    content += `${index + 1}. [${note.timestamp}]\n`;
+                }
+                content += `${note.text}\n\n`;
+            });
+
+            // Create a simple HTML for PDF generation
+            const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>${title}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            border-bottom: 3px solid #000;
+            padding-bottom: 10px;
+        }
+        .meta {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .note {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .timestamp {
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 8px;
+        }
+        .note-text {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>VIDEO NOTES</h1>
+    <div class="meta">
+        <p><strong>Video:</strong> ${videoFile ? videoFile.name : 'N/A'}</p>
+        <p><strong>Date:</strong> ${dateStr}</p>
+        <p><strong>Total Notes:</strong> ${notes.length}</p>
+    </div>
+    ${notes.map((note, index) => `
+        <div class="note">
+            <div class="timestamp">
+                ${index + 1}. ${note.type === 'free' || note.timestamp === null ? '[NOTE]' : `[${note.timestamp}]`}
+            </div>
+            <div class="note-text">${note.text}</div>
+        </div>
+    `).join('')}
+</body>
+</html>`;
+
+            // Open in new window for printing to PDF
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
+
+            setTimeout(() => {
+                printWindow.print();
+            }, 250);
+        });
+
+        // Load session
+        loadBtn.addEventListener('click', () => {
+            loadFileInput.click();
+        });
+
+        loadFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const session = JSON.parse(event.target.result);
+                        notes = session.notes || [];
+                        renderNotes();
+
+                        infoMessage.textContent = `Loaded session from ${new Date(session.exportDate).toLocaleString()}. Video: ${session.videoFileName}`;
+                        infoMessage.style.background = '#1a2a3a';
+                        infoMessage.style.borderColor = '#2a3a4a';
+                    } catch (error) {
+                        alert('Error loading session file');
+                        console.error(error);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Allow Enter key to add note
+        noteInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                addNoteBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

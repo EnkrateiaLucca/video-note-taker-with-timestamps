@@ -1,0 +1,175 @@
+{
+  "videoFileName": "cut_the_chit_chat_with_artifacts.mov",
+  "transcriptFileName": "cut_the_chit_chat_with_artifacts.json",
+  "notes": [
+    {
+      "timestamp": "00:00:09",
+      "timestampMs": 9000,
+      "text": "Main topic: UX problem with context management in AI assistants",
+      "id": 1699564801000,
+      "type": "timestamped",
+      "createdAt": 1699564801000
+    },
+    {
+      "timestamp": "00:00:42",
+      "timestampMs": 42000,
+      "text": "Key concept introduced: Artifacts - different take on the term",
+      "id": 1699564802000,
+      "type": "timestamped",
+      "createdAt": 1699564802000
+    },
+    {
+      "timestamp": "00:01:30",
+      "timestampMs": 90000,
+      "text": "Problem 1: Information already processed by model - could be hallucinated",
+      "id": 1699564803000,
+      "type": "timestamped",
+      "createdAt": 1699564803000
+    },
+    {
+      "timestamp": "00:02:05",
+      "timestampMs": 125000,
+      "text": "Problem 2: No visibility into the template, missing information",
+      "id": 1699564804000,
+      "type": "timestamped",
+      "createdAt": 1699564804000
+    },
+    {
+      "timestamp": null,
+      "timestampMs": 130000,
+      "text": "Remember to explore the blog post for full implementation details",
+      "id": 1699564804500,
+      "type": "free",
+      "createdAt": 1699564804500
+    },
+    {
+      "timestamp": "00:02:32",
+      "timestampMs": 152000,
+      "text": "Problem 3: Annoying to coerce model through conversation for edits",
+      "id": 1699564805000,
+      "type": "timestamped",
+      "createdAt": 1699564805000
+    },
+    {
+      "timestamp": "00:03:01",
+      "timestampMs": 181000,
+      "text": "Problem 4: Everything is text - hard to copy without boilerplate",
+      "id": 1699564806000,
+      "type": "timestamped",
+      "createdAt": 1699564806000
+    },
+    {
+      "timestamp": "00:03:25",
+      "timestampMs": 205000,
+      "text": "Solution: Model links to artifacts in right window instead of explaining",
+      "id": 1699564807000,
+      "type": "timestamped",
+      "createdAt": 1699564807000
+    },
+    {
+      "timestamp": "00:03:44",
+      "timestampMs": 224000,
+      "text": "Benefit: Can build rich UX around raw data - carousels, buttons, charts",
+      "id": 1699564808000,
+      "type": "timestamped",
+      "createdAt": 1699564808000
+    },
+    {
+      "timestamp": "00:04:36",
+      "timestampMs": 276000,
+      "text": "Everything hyperlinked - no repetition in conversation context",
+      "id": 1699564809000,
+      "type": "timestamped",
+      "createdAt": 1699564809000
+    },
+    {
+      "timestamp": "00:05:11",
+      "timestampMs": 311000,
+      "text": "User can make direct edits - feels like working together",
+      "id": 1699564810000,
+      "type": "timestamped",
+      "createdAt": 1699564810000
+    },
+    {
+      "timestamp": "00:05:27",
+      "timestampMs": 327000,
+      "text": "All versions on screen - no tracking through scroll history",
+      "id": 1699564811000,
+      "type": "timestamped",
+      "createdAt": 1699564811000
+    },
+    {
+      "timestamp": "00:06:01",
+      "timestampMs": 361000,
+      "text": "Implementation: No frameworks, just raw prompting to Claude",
+      "id": 1699564812000,
+      "type": "timestamped",
+      "createdAt": 1699564812000
+    },
+    {
+      "timestamp": "00:06:26",
+      "timestampMs": 386000,
+      "text": "Step 1: Define what an artifact is for the model",
+      "id": 1699564813000,
+      "type": "timestamped",
+      "createdAt": 1699564813000
+    },
+    {
+      "timestamp": "00:06:44",
+      "timestampMs": 404000,
+      "text": "Format: XML with identifier, content, human-readable title",
+      "id": 1699564814000,
+      "type": "timestamped",
+      "createdAt": 1699564814000
+    },
+    {
+      "timestamp": "00:07:16",
+      "timestampMs": 436000,
+      "text": "Models good at not hallucinating weird identifier strings",
+      "id": 1699564815000,
+      "type": "timestamped",
+      "createdAt": 1699564815000
+    },
+    {
+      "timestamp": "00:07:29",
+      "timestampMs": 449000,
+      "text": "Tell model: user has visibility, no need to describe in detail",
+      "id": 1699564816000,
+      "type": "timestamped",
+      "createdAt": 1699564816000
+    },
+    {
+      "timestamp": "00:07:50",
+      "timestampMs": 470000,
+      "text": "Models understand hyperlinks from internet training",
+      "id": 1699564817000,
+      "type": "timestamped",
+      "createdAt": 1699564817000
+    },
+    {
+      "timestamp": "00:09:05",
+      "timestampMs": 545000,
+      "text": "Data management: extract artifacts, reassemble as JSON + links",
+      "id": 1699564818000,
+      "type": "timestamped",
+      "createdAt": 1699564818000
+    },
+    {
+      "timestamp": "00:10:23",
+      "timestampMs": 623000,
+      "text": "Goal: Pair programming experience vs just chit-chatting",
+      "id": 1699564819000,
+      "type": "timestamped",
+      "createdAt": 1699564819000
+    },
+    {
+      "timestamp": "00:10:44",
+      "timestampMs": 644000,
+      "text": "Blog post: 'Cut the Chit Chat with Artifacts'",
+      "id": 1699564820000,
+      "type": "timestamped",
+      "createdAt": 1699564820000
+    }
+  ],
+  "exportDate": "2025-11-07T18:30:00.000Z"
+}

@@ -1,0 +1,25 @@
+{
+  "videoFileName": "cut_the_chit_chat_with_artifacts.mov",
+  "transcriptFileName": "cut_the_chit_chat_with_artifacts.json",
+  "notes": [
+    {
+      "timestamp": "00:03:03",
+      "timestampMs": 183441,
+      "text": "you don't get real work done",
+      "id": 1762539365660
+    },
+    {
+      "timestamp": "00:03:54",
+      "timestampMs": 234232,
+      "text": "better describe like the artifacts definition stuff",
+      "id": 1762539391585
+    },
+    {
+      "timestamp": "00:04:58",
+      "timestampMs": 298958,
+      "text": "improve example usecase",
+      "id": 1762539401340
+    }
+  ],
+  "exportDate": "2025-11-07T18:16:42.596Z"
+}

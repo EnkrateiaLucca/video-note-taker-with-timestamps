@@ -1,0 +1,1429 @@
+{
+	"systeminfo": "WHISPER : COREML = 0 | OPENVINO = 0 | Metal : EMBED_LIBRARY = 1 | CPU : ARM_FMA = 1 | FP16_VA = 1 | MATMUL_INT8 = 1 | DOTPROD = 1 | ACCELERATE = 1 | AARCH64_REPACK = 1 | ",
+	"model": {
+		"type": "base",
+		"multilingual": false,
+		"vocab": 51864,
+		"audio": {
+			"ctx": 1500,
+			"state": 512,
+			"head": 8,
+			"layer": 6
+		},
+		"text": {
+			"ctx": 448,
+			"state": 512,
+			"head": 8,
+			"layer": 6
+		},
+		"mels": 80,
+		"ftype": 1
+	},
+	"params": {
+		"model": "/Users/greatmaster/Desktop/projects/learning/audio-transcription-fast/whisper.cpp/models/ggml-base.en.bin",
+		"language": "en",
+		"translate": false
+	},
+	"result": {
+		"language": "en"
+	},
+	"transcription": [
+		{
+			"timestamps": {
+				"from": "00:00:00,000",
+				"to": "00:00:09,000"
+			},
+			"offsets": {
+				"from": 0,
+				"to": 9000
+			},
+			"text": " Hi, my name is John Berryman. I'm an AI consultant at Arcturus Labs, and I'm the author of prompt engineering for LLMs."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:09,000",
+				"to": "00:00:16,000"
+			},
+			"offsets": {
+				"from": 9000,
+				"to": 16000
+			},
+			"text": " Today I'd like to talk about a user experience problem that is related to context management."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:16,000",
+				"to": "00:00:24,000"
+			},
+			"offsets": {
+				"from": 16000,
+				"to": 24000
+			},
+			"text": " A lot of times you'll see an assistant type experience which over indexes into the conversation aspect."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:24,000",
+				"to": "00:00:29,000"
+			},
+			"offsets": {
+				"from": 24000,
+				"to": 29000
+			},
+			"text": " Everything is talking about something but not never getting any work done."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:29,000",
+				"to": "00:00:36,000"
+			},
+			"offsets": {
+				"from": 29000,
+				"to": 36000
+			},
+			"text": " What you really want is an experience where you're assistant and you get to work on a thing together."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:36,000",
+				"to": "00:00:42,000"
+			},
+			"offsets": {
+				"from": 36000,
+				"to": 42000
+			},
+			"text": " In order to accomplish that, what I like to introduce is the notion of artifacts."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:42,000",
+				"to": "00:00:47,000"
+			},
+			"offsets": {
+				"from": 42000,
+				"to": 47000
+			},
+			"text": " I know that terms have been taken before, but I've got a little bit different take on it."
+		},
+		{
+			"timestamps": {
+				"from": "00:00:47,000",
+				"to": "00:01:00,000"
+			},
+			"offsets": {
+				"from": 47000,
+				"to": 60000
+			},
+			"text": " So let's dig in. First of all is the scenario. On your screen, on the screen we'll show a user experience for a real estate professional."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:00,000",
+				"to": "00:01:06,000"
+			},
+			"offsets": {
+				"from": 60000,
+				"to": 66000
+			},
+			"text": " The left screen is a chat window. The right screen is going to be the artifacts that we introduce in a moment."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:06,000",
+				"to": "00:01:10,000"
+			},
+			"offsets": {
+				"from": 66000,
+				"to": 70000
+			},
+			"text": " But first we're going to see what the experience is like without artifacts."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:10,000",
+				"to": "00:01:20,000"
+			},
+			"offsets": {
+				"from": 70000,
+				"to": 80000
+			},
+			"text": " In a conversation with this assistant, we can do things like look up listings, generate emails and send emails on behalf of our users."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:20,000",
+				"to": "00:01:25,000"
+			},
+			"offsets": {
+				"from": 80000,
+				"to": 85000
+			},
+			"text": " So let's look at listing at 192 Oak Street."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:25,000",
+				"to": "00:01:30,000"
+			},
+			"offsets": {
+				"from": 85000,
+				"to": 90000
+			},
+			"text": " Okay, great. So it's returned, but here's the first problem."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:30,000",
+				"to": "00:01:35,000"
+			},
+			"offsets": {
+				"from": 90000,
+				"to": 95000
+			},
+			"text": " This information that it has has already been processed and regurgitated by the model."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:35,000",
+				"to": "00:01:39,000"
+			},
+			"offsets": {
+				"from": 95000,
+				"to": 99000
+			},
+			"text": " Is this all the information that we have access to?"
+		},
+		{
+			"timestamps": {
+				"from": "00:01:39,000",
+				"to": "00:01:45,000"
+			},
+			"offsets": {
+				"from": 99000,
+				"to": 105000
+			},
+			"text": " Could it possibly be hallucinated? We don't know. It's already been kind of recycled once."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:45,000",
+				"to": "00:01:49,000"
+			},
+			"offsets": {
+				"from": 105000,
+				"to": 109000
+			},
+			"text": " Alright, let's be satisfied with that for the time being."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:49,000",
+				"to": "00:01:54,000"
+			},
+			"offsets": {
+				"from": 109000,
+				"to": 114000
+			},
+			"text": " And let's ask the assistant to pull the email template and write a draft email."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:54,000",
+				"to": "00:01:59,000"
+			},
+			"offsets": {
+				"from": 114000,
+				"to": 119000
+			},
+			"text": " There's actually two things here. There's the draft template and the email itself."
+		},
+		{
+			"timestamps": {
+				"from": "00:01:59,000",
+				"to": "00:02:05,000"
+			},
+			"offsets": {
+				"from": 119000,
+				"to": 125000
+			},
+			"text": " But as you can see here, it drafted the email and I really don't have any visibility into the template."
+		},
+		{
+			"timestamps": {
+				"from": "00:02:05,000",
+				"to": "00:02:08,000"
+			},
+			"offsets": {
+				"from": 125000,
+				"to": 128000
+			},
+			"text": " Maybe I want to change it or something."
+		},
+		{
+			"timestamps": {
+				"from": "00:02:08,000",
+				"to": "00:02:16,000"
+			},
+			"offsets": {
+				"from": 128000,
+				"to": 136000
+			},
+			"text": " And this is just a template. We can see that pieces of, you know, the information has been inserted, but some of the information is missing."
+		},
+		{
+			"timestamps": {
+				"from": "00:02:16,000",
+				"to": "00:02:22,000"
+			},
+			"offsets": {
+				"from": 136000,
+				"to": 142000
+			},
+			"text": " So I can say, you know, I forgot to tell you that the potential buyer's name is Tim, Tim Cersey."
+		},
+		{
+			"timestamps": {
+				"from": "00:02:22,000",
+				"to": "00:02:27,000"
+			},
+			"offsets": {
+				"from": 142000,
+				"to": 147000
+			},
+			"text": " And the model can go and change the email."
+		},
+		{
+			"timestamps": {
+				"from": "00:02:27,000",
+				"to": "00:02:32,000"
+			},
+			"offsets": {
+				"from": 147000,
+				"to": 152000
+			},
+			"text": " There's Tim Cersey. But maybe I don't want to tell the model to change the line."
+		},
+		{
+			"timestamps": {
+				"from": "00:02:32,000",
+				"to": "00:02:40,000"
+			},
+			"offsets": {
+				"from": 152000,
+				"to": 160000
+			},
+			"text": " Maybe I just want to change it myself. And it's really annoying to have to coerce a model in conversation to change things."
+		},
+		{
+			"timestamps": {
+				"from": "00:02:40,000",
+				"to": "00:02:47,000"
+			},
+			"offsets": {
+				"from": 160000,
+				"to": 167000
+			},
+			"text": " So after, you know, going back and forth on this email, eventually I need to email Tim."
+		},
+		{
+			"timestamps": {
+				"from": "00:02:47,000",
+				"to": "00:02:51,000"
+			},
+			"offsets": {
+				"from": 167000,
+				"to": 171000
+			},
+			"text": " So I'll copy out the email, go to my email app, paste it, send it."
+		},
+		{
+			"timestamps": {
+				"from": "00:02:51,000",
+				"to": "00:03:01,000"
+			},
+			"offsets": {
+				"from": 171000,
+				"to": 181000
+			},
+			"text": " And then, of course, I realize I've copied out the boilerplate by the model because everything is just text in the conversation."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:01,000",
+				"to": "00:03:04,000"
+			},
+			"offsets": {
+				"from": 181000,
+				"to": 184000
+			},
+			"text": " You don't actually get any real work done."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:04,000",
+				"to": "00:03:10,000"
+			},
+			"offsets": {
+				"from": 184000,
+				"to": 190000
+			},
+			"text": " All right. So now let's look at an alternative with artifacts, which will show up in this window over here."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:10,000",
+				"to": "00:03:15,000"
+			},
+			"offsets": {
+				"from": 190000,
+				"to": 195000
+			},
+			"text": " I can make the same request to look for the home listing."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:15,000",
+				"to": "00:03:25,000"
+			},
+			"offsets": {
+				"from": 195000,
+				"to": 205000
+			},
+			"text": " And when the model comes back, it doesn't have the big explanation because it knows it can link to something in this right window, the artifact."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:25,000",
+				"to": "00:03:29,000"
+			},
+			"offsets": {
+				"from": 205000,
+				"to": 209000
+			},
+			"text": " Now, you have to use your creative imagination a little bit."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:29,000",
+				"to": "00:03:34,000"
+			},
+			"offsets": {
+				"from": 209000,
+				"to": 214000
+			},
+			"text": " This is JavaScript, which no real estate professional is going to want to read."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:34,000",
+				"to": "00:03:44,000"
+			},
+			"offsets": {
+				"from": 214000,
+				"to": 224000
+			},
+			"text": " But if you have the raw JavaScript of the asset itself, and if you know what type it is, then you can build any type of user experience that you want around this."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:44,000",
+				"to": "00:03:51,000"
+			},
+			"offsets": {
+				"from": 224000,
+				"to": 231000
+			},
+			"text": " This JavaScript could be, or this JSON, could be turned into a carousel that you can spend through and look at images of the home."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:51,000",
+				"to": "00:03:58,000"
+			},
+			"offsets": {
+				"from": 231000,
+				"to": 238000
+			},
+			"text": " It can be turned into buttons that you can click and get more detailed knowledge and charts and graphs and stuff."
+		},
+		{
+			"timestamps": {
+				"from": "00:03:58,000",
+				"to": "00:04:03,000"
+			},
+			"offsets": {
+				"from": 238000,
+				"to": 243000
+			},
+			"text": " So already you can imagine a much richer user experience."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:03,000",
+				"to": "00:04:12,000"
+			},
+			"offsets": {
+				"from": 243000,
+				"to": 252000
+			},
+			"text": " And I will know exactly as the user, I will know exactly what the truth is because it's not just something that's been regurgitated by the model."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:12,000",
+				"to": "00:04:21,000"
+			},
+			"offsets": {
+				"from": 252000,
+				"to": 261000
+			},
+			"text": " So next up, let's go through pulling the email template and sticking the information from this listing into a new email."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:21,000",
+				"to": "00:04:25,000"
+			},
+			"offsets": {
+				"from": 261000,
+				"to": 265000
+			},
+			"text": " Same scenario as before."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:25,000",
+				"to": "00:04:27,000"
+			},
+			"offsets": {
+				"from": 265000,
+				"to": 267000
+			},
+			"text": " There's still two items."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:27,000",
+				"to": "00:04:32,000"
+			},
+			"offsets": {
+				"from": 267000,
+				"to": 272000
+			},
+			"text": " There's the template and the actual email itself."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:32,000",
+				"to": "00:04:36,000"
+			},
+			"offsets": {
+				"from": 272000,
+				"to": 276000
+			},
+			"text": " Now, the cool thing about this is everything is hyperlinked."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:36,000",
+				"to": "00:04:40,000"
+			},
+			"offsets": {
+				"from": 276000,
+				"to": 280000
+			},
+			"text": " We don't get everything repeated in the context of the conversation."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:40,000",
+				"to": "00:04:46,000"
+			},
+			"offsets": {
+				"from": 280000,
+				"to": 286000
+			},
+			"text": " If we want to, we can look up the email that's been rendered."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:46,000",
+				"to": "00:04:50,000"
+			},
+			"offsets": {
+				"from": 286000,
+				"to": 290000
+			},
+			"text": " If there's something strange, we can go back to our template."
+		},
+		{
+			"timestamps": {
+				"from": "00:04:50,000",
+				"to": "00:05:01,000"
+			},
+			"offsets": {
+				"from": 290000,
+				"to": 301000
+			},
+			"text": " And just like before, you know, we've left out the client name, I could tell the model, please stick in Tim Cersei as the name for the client."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:01,000",
+				"to": "00:05:09,000"
+			},
+			"offsets": {
+				"from": 301000,
+				"to": 309000
+			},
+			"text": " It will do that, but the cool thing is, as I could say, no, no, that's Cersei spelled that way."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:09,000",
+				"to": "00:05:11,000"
+			},
+			"offsets": {
+				"from": 309000,
+				"to": 311000
+			},
+			"text": " I can make changes myself."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:11,000",
+				"to": "00:05:13,000"
+			},
+			"offsets": {
+				"from": 311000,
+				"to": 313000
+			},
+			"text": " The assistant can see my changes."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:13,000",
+				"to": "00:05:15,000"
+			},
+			"offsets": {
+				"from": 313000,
+				"to": 315000
+			},
+			"text": " I can see the assistant changes."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:15,000",
+				"to": "00:05:19,000"
+			},
+			"offsets": {
+				"from": 315000,
+				"to": 319000
+			},
+			"text": " It really feels like we're working on something together."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:19,000",
+				"to": "00:05:27,000"
+			},
+			"offsets": {
+				"from": 319000,
+				"to": 327000
+			},
+			"text": " And finally, you know, I've gone back and forth and working on this artifact, every version is right here."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:27,000",
+				"to": "00:05:28,000"
+			},
+			"offsets": {
+				"from": 327000,
+				"to": 328000
+			},
+			"text": " It's on the screen in front of me."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:28,000",
+				"to": "00:05:32,000"
+			},
+			"offsets": {
+				"from": 328000,
+				"to": 332000
+			},
+			"text": " I don't have like different versions in the scroll back that I'll have to track down."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:32,000",
+				"to": "00:05:40,000"
+			},
+			"offsets": {
+				"from": 332000,
+				"to": 340000
+			},
+			"text": " So when I'm satisfied that the current state of the artifact is good in this current app, I can copy, paste it out."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:40,000",
+				"to": "00:05:41,000"
+			},
+			"offsets": {
+				"from": 340000,
+				"to": 341000
+			},
+			"text": " This is rich content."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:41,000",
+				"to": "00:05:48,000"
+			},
+			"offsets": {
+				"from": 341000,
+				"to": 348000
+			},
+			"text": " If the app knows that this is an email, then all we have to do is stick a button on here that says this is an email, send it."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:48,000",
+				"to": "00:05:51,000"
+			},
+			"offsets": {
+				"from": 348000,
+				"to": 351000
+			},
+			"text": " And it'll automatically be able to send it to your customer."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:51,000",
+				"to": "00:05:57,000"
+			},
+			"offsets": {
+				"from": 351000,
+				"to": 357000
+			},
+			"text": " So a lot richer user experience by teaching the model what the notion of an artifact is."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:57,000",
+				"to": "00:05:59,000"
+			},
+			"offsets": {
+				"from": 357000,
+				"to": 359000
+			},
+			"text": " Now let's see how you do this."
+		},
+		{
+			"timestamps": {
+				"from": "00:05:59,000",
+				"to": "00:06:01,000"
+			},
+			"offsets": {
+				"from": 359000,
+				"to": 361000
+			},
+			"text": " It's actually quite simple."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:01,000",
+				"to": "00:06:04,000"
+			},
+			"offsets": {
+				"from": 361000,
+				"to": 364000
+			},
+			"text": " Everything that you're going to see, there's no frameworks."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:04,000",
+				"to": "00:06:07,000"
+			},
+			"offsets": {
+				"from": 364000,
+				"to": 367000
+			},
+			"text": " I'm just raw-dogging it to to to claw it."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:07,000",
+				"to": "00:06:08,000"
+			},
+			"offsets": {
+				"from": 367000,
+				"to": 368000
+			},
+			"text": " It's not it."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:08,000",
+				"to": "00:06:11,000"
+			},
+			"offsets": {
+				"from": 368000,
+				"to": 371000
+			},
+			"text": " And it's it's basically two things in the back end."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:11,000",
+				"to": "00:06:19,000"
+			},
+			"offsets": {
+				"from": 371000,
+				"to": 379000
+			},
+			"text": " It is the instructions and it is data management to just kind of get it all back and into order."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:19,000",
+				"to": "00:06:24,000"
+			},
+			"offsets": {
+				"from": 379000,
+				"to": 384000
+			},
+			"text": " So I always like to say that you need to be empathetic for your model."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:24,000",
+				"to": "00:06:26,000"
+			},
+			"offsets": {
+				"from": 384000,
+				"to": 386000
+			},
+			"text": " Think through their eyes."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:26,000",
+				"to": "00:06:30,000"
+			},
+			"offsets": {
+				"from": 386000,
+				"to": 390000
+			},
+			"text": " They've never heard of an artifact, at least in my definition."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:30,000",
+				"to": "00:06:34,000"
+			},
+			"offsets": {
+				"from": 390000,
+				"to": 394000
+			},
+			"text": " So we need to make sure that we describe what an artifact is."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:34,000",
+				"to": "00:06:39,000"
+			},
+			"offsets": {
+				"from": 394000,
+				"to": 399000
+			},
+			"text": " Self-contained piece of content that can be referenced in a conversation, et cetera."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:39,000",
+				"to": "00:06:44,000"
+			},
+			"offsets": {
+				"from": 399000,
+				"to": 404000
+			},
+			"text": " And as far as the large language model is concerned, it always has this format."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:44,000",
+				"to": "00:06:46,000"
+			},
+			"offsets": {
+				"from": 404000,
+				"to": 406000
+			},
+			"text": " I like XML."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:46,000",
+				"to": "00:06:48,000"
+			},
+			"offsets": {
+				"from": 406000,
+				"to": 408000
+			},
+			"text": " It's kind of an anthropic thing."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:48,000",
+				"to": "00:06:50,000"
+			},
+			"offsets": {
+				"from": 408000,
+				"to": 410000
+			},
+			"text": " They do really good with it."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:50,000",
+				"to": "00:06:53,000"
+			},
+			"offsets": {
+				"from": 410000,
+				"to": 413000
+			},
+			"text": " But it's it's got an identifier."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:53,000",
+				"to": "00:06:56,000"
+			},
+			"offsets": {
+				"from": 413000,
+				"to": 416000
+			},
+			"text": " It's got content and it's got a human readable title."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:56,000",
+				"to": "00:06:57,000"
+			},
+			"offsets": {
+				"from": 416000,
+				"to": 417000
+			},
+			"text": " That's the important pieces."
+		},
+		{
+			"timestamps": {
+				"from": "00:06:57,000",
+				"to": "00:07:03,000"
+			},
+			"offsets": {
+				"from": 417000,
+				"to": 423000
+			},
+			"text": " The really important piece that has actually kind of magic for a lot of different things"
+		},
+		{
+			"timestamps": {
+				"from": "00:07:03,000",
+				"to": "00:07:06,000"
+			},
+			"offsets": {
+				"from": 423000,
+				"to": 426000
+			},
+			"text": " you can do with this is the identifier."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:06,000",
+				"to": "00:07:10,000"
+			},
+			"offsets": {
+				"from": 426000,
+				"to": 430000
+			},
+			"text": " These models, it doesn't really quite matter what the identifier is."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:10,000",
+				"to": "00:07:16,000"
+			},
+			"offsets": {
+				"from": 430000,
+				"to": 436000
+			},
+			"text": " These models are are really good about not hallucinating these weird strings of text."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:16,000",
+				"to": "00:07:20,000"
+			},
+			"offsets": {
+				"from": 436000,
+				"to": 440000
+			},
+			"text": " So it's really easy for a model to use it to reference to things."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:20,000",
+				"to": "00:07:21,000"
+			},
+			"offsets": {
+				"from": 440000,
+				"to": 441000
+			},
+			"text": " All right."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:21,000",
+				"to": "00:07:22,000"
+			},
+			"offsets": {
+				"from": 441000,
+				"to": 442000
+			},
+			"text": " So there's an identifier."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:22,000",
+				"to": "00:07:25,000"
+			},
+			"offsets": {
+				"from": 442000,
+				"to": 445000
+			},
+			"text": " Then we include instructions."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:25,000",
+				"to": "00:07:29,000"
+			},
+			"offsets": {
+				"from": 445000,
+				"to": 449000
+			},
+			"text": " We say that the user has visibility into this."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:29,000",
+				"to": "00:07:35,000"
+			},
+			"offsets": {
+				"from": 449000,
+				"to": 455000
+			},
+			"text": " So the model doesn't have to go to describe the artifact in detail."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:35,000",
+				"to": "00:07:37,000"
+			},
+			"offsets": {
+				"from": 455000,
+				"to": 457000
+			},
+			"text": " It can just summarize it and point to it."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:37,000",
+				"to": "00:07:43,000"
+			},
+			"offsets": {
+				"from": 457000,
+				"to": 463000
+			},
+			"text": " We also tell the model in these lines how exactly it can refer to it."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:43,000",
+				"to": "00:07:50,000"
+			},
+			"offsets": {
+				"from": 463000,
+				"to": 470000
+			},
+			"text": " It can it can say, all right, this ID response corresponds to the thing I want you to look at."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:50,000",
+				"to": "00:07:56,000"
+			},
+			"offsets": {
+				"from": 470000,
+				"to": 476000
+			},
+			"text": " And the models have been trained on the internet, so they really get the idea of how to use a hyperlink like this."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:56,000",
+				"to": "00:07:59,000"
+			},
+			"offsets": {
+				"from": 476000,
+				"to": 479000
+			},
+			"text": " Super easy for the models to grok."
+		},
+		{
+			"timestamps": {
+				"from": "00:07:59,000",
+				"to": "00:08:08,000"
+			},
+			"offsets": {
+				"from": 479000,
+				"to": 488000
+			},
+			"text": " We also talk about how the assistant can't itself create an artifact, just like it created the email based on the template."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:08,000",
+				"to": "00:08:09,000"
+			},
+			"offsets": {
+				"from": 488000,
+				"to": 489000
+			},
+			"text": " And it's simple."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:09,000",
+				"to": "00:08:10,000"
+			},
+			"offsets": {
+				"from": 489000,
+				"to": 490000
+			},
+			"text": " Here's an example."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:10,000",
+				"to": "00:08:15,000"
+			},
+			"offsets": {
+				"from": 490000,
+				"to": 495000
+			},
+			"text": " If for example, the human said create me a sorting function of Python."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:15,000",
+				"to": "00:08:26,000"
+			},
+			"offsets": {
+				"from": 495000,
+				"to": 506000
+			},
+			"text": " The assistant can have a normal conversation, but then inject an HTML blob that is in the shape of an artifact and then can refer to it like this."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:26,000",
+				"to": "00:08:28,000"
+			},
+			"offsets": {
+				"from": 506000,
+				"to": 508000
+			},
+			"text": " So it's a really easy way of introducing it."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:28,000",
+				"to": "00:08:35,000"
+			},
+			"offsets": {
+				"from": 508000,
+				"to": 515000
+			},
+			"text": " And similarly, this is how an assistant knows to edit an artifact."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:35,000",
+				"to": "00:08:40,000"
+			},
+			"offsets": {
+				"from": 515000,
+				"to": 520000
+			},
+			"text": " And basically all I'm doing for simplicity is just having to completely rewrite the whole thing."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:40,000",
+				"to": "00:08:44,000"
+			},
+			"offsets": {
+				"from": 520000,
+				"to": 524000
+			},
+			"text": " If the artifact is huge, you do something better, I'm sure."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:44,000",
+				"to": "00:08:49,000"
+			},
+			"offsets": {
+				"from": 524000,
+				"to": 529000
+			},
+			"text": " And finally, the user is going to have a bunch of artifacts built up."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:49,000",
+				"to": "00:08:56,000"
+			},
+			"offsets": {
+				"from": 529000,
+				"to": 536000
+			},
+			"text": " So we'll tell the model that it can look for these things inside the artifact info tag."
+		},
+		{
+			"timestamps": {
+				"from": "00:08:56,000",
+				"to": "00:09:05,000"
+			},
+			"offsets": {
+				"from": 536000,
+				"to": 545000
+			},
+			"text": " The rest of that is just pretty typical context management data management within the loop itself."
+		},
+		{
+			"timestamps": {
+				"from": "00:09:05,000",
+				"to": "00:09:10,000"
+			},
+			"offsets": {
+				"from": 545000,
+				"to": 550000
+			},
+			"text": " In a conversation, the user is going to say things to the assistant."
+		},
+		{
+			"timestamps": {
+				"from": "00:09:10,000",
+				"to": "00:09:18,000"
+			},
+			"offsets": {
+				"from": 550000,
+				"to": 558000
+			},
+			"text": " So all we're doing here is taking the user's message and very typically appending it to the history, sending it to the model."
+		},
+		{
+			"timestamps": {
+				"from": "00:09:18,000",
+				"to": "00:09:21,000"
+			},
+			"offsets": {
+				"from": 558000,
+				"to": 561000
+			},
+			"text": " There could be tool calls, so we're dealing with that."
+		},
+		{
+			"timestamps": {
+				"from": "00:09:21,000",
+				"to": "00:09:24,000"
+			},
+			"offsets": {
+				"from": 561000,
+				"to": 564000
+			},
+			"text": " And we're getting a final response out."
+		},
+		{
+			"timestamps": {
+				"from": "00:09:24,000",
+				"to": "00:09:32,000"
+			},
+			"offsets": {
+				"from": 564000,
+				"to": 572000
+			},
+			"text": " The only thing that's different is this right here and how we put the problem together at the top."
+		},
+		{
+			"timestamps": {
+				"from": "00:09:32,000",
+				"to": "00:09:47,000"
+			},
+			"offsets": {
+				"from": 572000,
+				"to": 587000
+			},
+			"text": " Basically, we say, take whatever the history is and we're going to extract the artifacts and reassemble that into two bits."
+		},
+		{
+			"timestamps": {
+				"from": "00:09:47,000",
+				"to": "00:09:51,000"
+			},
+			"offsets": {
+				"from": 587000,
+				"to": 591000
+			},
+			"text": " It's just going to be a list of artifacts that we can display on the front end as JSON."
+		},
+		{
+			"timestamps": {
+				"from": "00:09:51,000",
+				"to": "00:09:57,000"
+			},
+			"offsets": {
+				"from": 591000,
+				"to": 597000
+			},
+			"text": " So we pull it out of the XML and it's going to be messages that instead of the artifacts that the model is written,"
+		},
+		{
+			"timestamps": {
+				"from": "00:09:57,000",
+				"to": "00:10:01,000"
+			},
+			"offsets": {
+				"from": 597000,
+				"to": 601000
+			},
+			"text": " it's just turned it into a link that references out of that."
+		},
+		{
+			"timestamps": {
+				"from": "00:10:01,000",
+				"to": "00:10:08,000"
+			},
+			"offsets": {
+				"from": 601000,
+				"to": 608000
+			},
+			"text": " And then the final thing is you can go here and all of these are just hyperlinks."
+		},
+		{
+			"timestamps": {
+				"from": "00:10:08,000",
+				"to": "00:10:16,000"
+			},
+			"offsets": {
+				"from": 608000,
+				"to": 616000
+			},
+			"text": " And I've just made it so that the tabs have the same hyperlink as these links are pointing to."
+		},
+		{
+			"timestamps": {
+				"from": "00:10:16,000",
+				"to": "00:10:18,000"
+			},
+			"offsets": {
+				"from": 616000,
+				"to": 618000
+			},
+			"text": " So it's a really easy implementation."
+		},
+		{
+			"timestamps": {
+				"from": "00:10:18,000",
+				"to": "00:10:23,000"
+			},
+			"offsets": {
+				"from": 618000,
+				"to": 623000
+			},
+			"text": " Obviously, this is just a start. You can do whatever you want to."
+		},
+		{
+			"timestamps": {
+				"from": "00:10:23,000",
+				"to": "00:10:31,000"
+			},
+			"offsets": {
+				"from": 623000,
+				"to": 631000
+			},
+			"text": " So that's simple bit of context management that will really help you to make a better experience"
+		},
+		{
+			"timestamps": {
+				"from": "00:10:31,000",
+				"to": "00:10:35,000"
+			},
+			"offsets": {
+				"from": 631000,
+				"to": 635000
+			},
+			"text": " where it's more like pair programming with the assistant."
+		},
+		{
+			"timestamps": {
+				"from": "00:10:35,000",
+				"to": "00:10:41,000"
+			},
+			"offsets": {
+				"from": 635000,
+				"to": 641000
+			},
+			"text": " It's more like kind of working on something rather than just chit-chatting about it."
+		},
+		{
+			"timestamps": {
+				"from": "00:10:41,000",
+				"to": "00:10:44,000"
+			},
+			"offsets": {
+				"from": 641000,
+				"to": 644000
+			},
+			"text": " So if you found that interesting, I hope you enjoyed it."
+		},
+		{
+			"timestamps": {
+				"from": "00:10:44,000",
+				"to": "00:10:49,000"
+			},
+			"offsets": {
+				"from": 644000,
+				"to": 649000
+			},
+			"text": " I wrote a whole blog post on this that's called Cut the Chit Chat with Artifacts."
+		},
+		{
+			"timestamps": {
+				"from": "00:10:49,000",
+				"to": "00:10:54,000"
+			},
+			"offsets": {
+				"from": 649000,
+				"to": 654000
+			},
+			"text": " And check it out. I do some interesting things there and I hope you like it. See ya."
+		}
+	]
+}
