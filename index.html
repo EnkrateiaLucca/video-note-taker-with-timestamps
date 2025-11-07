@@ -20,12 +20,13 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 650px;
             gap: 20px;
             align-items: start;
+            min-height: calc(100vh - 40px);
         }
 
         .panel {
@@ -37,10 +38,16 @@
 
         .notes-panel {
             grid-column: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 40px);
         }
 
         .video-panel {
             grid-column: 2;
+            position: sticky;
+            top: 20px;
+            align-self: start;
         }
 
         h1, h2 {
@@ -56,6 +63,7 @@
 
         video {
             width: 100%;
+            display: block;
             background: #000;
             border: 1px solid #333;
             border-radius: 4px;
@@ -98,9 +106,15 @@
             background: #ddd;
         }
 
+        .note-input-section {
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
         .note-input {
             width: 100%;
-            min-height: 80px;
+            min-height: 60px;
             padding: 10px;
             background: #000;
             border: 1px solid #444;
@@ -110,6 +124,11 @@
             font-family: inherit;
             resize: vertical;
             margin-bottom: 10px;
+        }
+
+        .note-input:focus {
+            outline: none;
+            border-color: #fff;
         }
 
         button {
@@ -134,7 +153,27 @@
         }
 
         .notes-list {
-            margin-top: 20px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-top: 15px;
+            max-height: calc(100vh - 350px);
+        }
+
+        .notes-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .notes-list::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .notes-list::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+
+        .notes-list::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
         .note-item {
@@ -143,6 +182,24 @@
             border-radius: 4px;
             padding: 12px;
             margin-bottom: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .note-item.active {
+            border-color: #fff;
+            background: #1a1a1a;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .note-item.active::before {
+            content: '▶';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 12px;
         }
 
         .note-timestamp {
@@ -236,23 +293,49 @@
         }
 
         .button-group {
-            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .button-group button {
-            margin-right: 10px;
+            flex: 1;
+            min-width: 120px;
         }
 
         .export-section {
-            margin-top: 20px;
-            padding-top: 20px;
+            padding-top: 15px;
             border-top: 1px solid #333;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .export-section button {
+            flex: 1;
+            min-width: 100px;
+            font-size: 12px;
+            padding: 8px 12px;
         }
 
         .current-time {
-            color: #888;
-            font-size: 12px;
+            color: #aaa;
+            font-size: 13px;
             margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .notes-count {
+            color: #666;
+            font-size: 12px;
+            font-weight: normal;
         }
 
         .info-message {
@@ -265,44 +348,54 @@
             color: #aaa;
         }
 
-        @media (max-width: 900px) {
+        .video-timeline-markers {
+            position: relative;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            width: 3px;
+            height: 6px;
+            background: #fff;
+            border-radius: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .timeline-marker:hover {
+            height: 12px;
+            margin-top: -3px;
+            background: #aaa;
+        }
+
+        @media (max-width: 1200px) {
             .container {
                 grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .video-panel {
+                position: relative;
+                top: 0;
+            }
+
+            .notes-panel {
+                min-height: auto;
+            }
+
+            .notes-list {
+                max-height: 600px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Video Note Taker</h1>
-
-        <div class="panel notes-panel">
-            <h2>Notes</h2>
-
-            <div class="current-time" id="currentTime">Current time: 00:00:00</div>
-
-            <textarea
-                class="note-input"
-                id="noteInput"
-                placeholder="Type your note here..."
-                disabled
-            ></textarea>
-
-            <div class="button-group">
-                <button id="addNoteBtn" disabled>Add Note at Current Time</button>
-                <button id="addFreeNoteBtn" disabled>Add Note (No Timestamp)</button>
-            </div>
-
-            <div class="notes-list" id="notesList"></div>
-
-            <div class="export-section">
-                <button id="exportBtn" disabled>Export JSON</button>
-                <button id="exportPdfBtn" disabled>Export PDF</button>
-                <button id="loadBtn">Load Session</button>
-                <input type="file" id="loadFile" accept=".json" style="display: none;">
-            </div>
-        </div>
-
         <div class="panel video-panel">
             <h2>Video & Transcript</h2>
 
@@ -316,9 +409,43 @@
 
             <video id="videoPlayer" controls></video>
 
+            <div class="video-timeline-markers" id="timelineMarkers"></div>
+
             <div class="info-message" id="infoMessage">
                 Upload a video and its transcript to get started.
             </div>
+
+            <div class="export-section">
+                <button id="exportBtn" disabled>Export JSON</button>
+                <button id="exportPdfBtn" disabled>Export PDF</button>
+                <button id="loadBtn">Load Session</button>
+                <input type="file" id="loadFile" accept=".json" style="display: none;">
+            </div>
+        </div>
+
+        <div class="panel notes-panel">
+            <div class="notes-header">
+                <h2>Notes</h2>
+                <span class="notes-count" id="notesCount">0 notes</span>
+            </div>
+
+            <div class="note-input-section">
+                <div class="current-time" id="currentTime">Current time: 00:00:00</div>
+
+                <textarea
+                    class="note-input"
+                    id="noteInput"
+                    placeholder="Type your note here..."
+                    disabled
+                ></textarea>
+
+                <div class="button-group">
+                    <button id="addNoteBtn" disabled>Add Note at Current Time</button>
+                    <button id="addFreeNoteBtn" disabled>Add Note (No Timestamp)</button>
+                </div>
+            </div>
+
+            <div class="notes-list" id="notesList"></div>
         </div>
     </div>
 
@@ -328,6 +455,7 @@
         let notes = [];
         let videoFile = null;
         let transcriptFileName = null;
+        let noteScreenshots = {}; // Store screenshots keyed by note ID
 
         // Elements
         const videoPlayer = document.getElementById('videoPlayer');
@@ -343,6 +471,10 @@
         const loadFileInput = document.getElementById('loadFile');
         const currentTimeDisplay = document.getElementById('currentTime');
         const infoMessage = document.getElementById('infoMessage');
+        const notesCount = document.getElementById('notesCount');
+        const timelineMarkers = document.getElementById('timelineMarkers');
+
+        let currentActiveNoteId = null;
 
         // Format milliseconds to HH:MM:SS
         function formatTime(ms) {
@@ -353,11 +485,87 @@
             return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        // Update current time display
+        // Capture screenshot from video at current time
+        function captureVideoScreenshot() {
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas');
+                canvas.width = videoPlayer.videoWidth;
+                canvas.height = videoPlayer.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
+
+                // Convert to base64 data URL
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                resolve(dataUrl);
+            });
+        }
+
+        // Update current time display and highlight active note
         videoPlayer.addEventListener('timeupdate', () => {
             const currentMs = videoPlayer.currentTime * 1000;
             currentTimeDisplay.textContent = `Current time: ${formatTime(currentMs)}`;
+
+            // Find the note closest to current time
+            highlightActiveNote(currentMs);
         });
+
+        // Highlight the note closest to current video time
+        function highlightActiveNote(currentMs) {
+            if (notes.length === 0) return;
+
+            // Find notes with timestamps
+            const timestampedNotes = notes.filter(n => n.type === 'timestamped' && n.timestampMs != null);
+            if (timestampedNotes.length === 0) return;
+
+            // Find the most recent note before or at current time
+            let activeNote = null;
+            for (let i = timestampedNotes.length - 1; i >= 0; i--) {
+                if (timestampedNotes[i].timestampMs <= currentMs) {
+                    activeNote = timestampedNotes[i];
+                    break;
+                }
+            }
+
+            // If no note before current time, use the first note if we're close
+            if (!activeNote && timestampedNotes.length > 0) {
+                const firstNote = timestampedNotes[0];
+                if (Math.abs(firstNote.timestampMs - currentMs) < 5000) { // Within 5 seconds
+                    activeNote = firstNote;
+                }
+            }
+
+            // Update active state
+            if (activeNote && activeNote.id !== currentActiveNoteId) {
+                currentActiveNoteId = activeNote.id;
+
+                // Remove previous active class
+                document.querySelectorAll('.note-item.active').forEach(el => {
+                    el.classList.remove('active');
+                });
+
+                // Add active class to current note
+                const activeElement = document.querySelector(`[data-note-id="${activeNote.id}"]`);
+                if (activeElement) {
+                    activeElement.classList.add('active');
+
+                    // Auto-scroll to keep active note in view (only if not already visible)
+                    const container = notesList;
+                    const elementTop = activeElement.offsetTop;
+                    const elementBottom = elementTop + activeElement.offsetHeight;
+                    const containerTop = container.scrollTop;
+                    const containerBottom = containerTop + container.clientHeight;
+
+                    // Only scroll if the element is not fully visible
+                    if (elementTop < containerTop || elementBottom > containerBottom) {
+                        activeElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest',
+                            inline: 'nearest'
+                        });
+                    }
+                }
+            }
+        }
 
         // Handle video file upload
         videoFileInput.addEventListener('change', (e) => {
@@ -404,7 +612,7 @@
         }
 
         // Add note with timestamp
-        addNoteBtn.addEventListener('click', () => {
+        addNoteBtn.addEventListener('click', async () => {
             const noteText = noteInput.value.trim();
             if (!noteText) {
                 alert('Please enter a note');
@@ -412,15 +620,24 @@
             }
 
             const currentMs = Math.floor(videoPlayer.currentTime * 1000);
+            const noteId = Date.now();
 
             const note = {
                 timestamp: formatTime(currentMs),
                 timestampMs: currentMs,
                 text: noteText,
-                id: Date.now(),
+                id: noteId,
                 type: 'timestamped',
-                createdAt: Date.now()
+                createdAt: noteId
             };
+
+            // Capture screenshot at this timestamp
+            try {
+                const screenshot = await captureVideoScreenshot();
+                noteScreenshots[noteId] = screenshot;
+            } catch (error) {
+                console.error('Failed to capture screenshot:', error);
+            }
 
             notes.push(note);
             notes.sort((a, b) => {
@@ -432,6 +649,7 @@
 
             noteInput.value = '';
             renderNotes();
+            noteInput.focus();
         });
 
         // Add free note without timestamp
@@ -463,6 +681,7 @@
 
             noteInput.value = '';
             renderNotes();
+            noteInput.focus();
         });
 
         // Edit note
@@ -500,18 +719,50 @@
             deleteBtn.replaceWith(cancelBtn);
         }
 
+        // Render timeline markers
+        function renderTimelineMarkers() {
+            timelineMarkers.innerHTML = '';
+
+            if (!videoPlayer.duration || notes.length === 0) return;
+
+            const duration = videoPlayer.duration * 1000;
+
+            notes.forEach(note => {
+                if (note.type === 'timestamped' && note.timestampMs != null) {
+                    const marker = document.createElement('div');
+                    marker.className = 'timeline-marker';
+                    marker.style.left = `${(note.timestampMs / duration) * 100}%`;
+                    marker.title = `${note.timestamp}: ${note.text.substring(0, 50)}...`;
+                    marker.addEventListener('click', () => {
+                        videoPlayer.currentTime = note.timestampMs / 1000;
+                        videoPlayer.play();
+                    });
+                    timelineMarkers.appendChild(marker);
+                }
+            });
+        }
+
+        // Update notes count
+        function updateNotesCount() {
+            const count = notes.length;
+            notesCount.textContent = `${count} note${count !== 1 ? 's' : ''}`;
+        }
+
         // Render notes
         function renderNotes() {
             notesList.innerHTML = '';
 
             if (notes.length === 0) {
                 notesList.innerHTML = '<div class="info-message">No notes yet. Add your first note above!</div>';
+                updateNotesCount();
+                renderTimelineMarkers();
                 return;
             }
 
             notes.forEach(note => {
                 const noteItem = document.createElement('div');
                 noteItem.className = 'note-item';
+                noteItem.setAttribute('data-note-id', note.id);
 
                 // Timestamp or type label
                 if (note.type === 'free' || note.timestamp === null) {
@@ -556,7 +807,15 @@
                 noteItem.appendChild(deleteBtn);
                 notesList.appendChild(noteItem);
             });
+
+            updateNotesCount();
+            renderTimelineMarkers();
         }
+
+        // Update timeline when video metadata is loaded
+        videoPlayer.addEventListener('loadedmetadata', () => {
+            renderTimelineMarkers();
+        });
 
         // Export session as JSON
         exportBtn.addEventListener('click', () => {
@@ -564,6 +823,7 @@
                 videoFileName: videoFile.name,
                 transcriptFileName: transcriptFileName,
                 notes: notes,
+                screenshots: noteScreenshots,
                 exportDate: new Date().toISOString()
             };
 
@@ -581,22 +841,7 @@
             const title = videoFile ? videoFile.name : 'Video Notes';
             const dateStr = new Date().toLocaleDateString();
 
-            let content = `VIDEO NOTES\n\n`;
-            content += `Video: ${videoFile ? videoFile.name : 'N/A'}\n`;
-            content += `Date: ${dateStr}\n`;
-            content += `Total Notes: ${notes.length}\n\n`;
-            content += `${'='.repeat(80)}\n\n`;
-
-            notes.forEach((note, index) => {
-                if (note.type === 'free' || note.timestamp === null) {
-                    content += `${index + 1}. [NOTE]\n`;
-                } else {
-                    content += `${index + 1}. [${note.timestamp}]\n`;
-                }
-                content += `${note.text}\n\n`;
-            });
-
-            // Create a simple HTML for PDF generation
+            // Create a simple HTML for PDF generation with screenshots
             const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -614,24 +859,44 @@
         h1 {
             border-bottom: 3px solid #000;
             padding-bottom: 10px;
+            margin-bottom: 20px;
         }
         .meta {
             color: #666;
             margin-bottom: 30px;
+            font-size: 14px;
         }
         .note {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             padding: 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            page-break-inside: avoid;
         }
         .timestamp {
             font-weight: bold;
             color: #000;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .screenshot {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         .note-text {
             color: #333;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        @media print {
+            .note {
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
@@ -642,14 +907,18 @@
         <p><strong>Date:</strong> ${dateStr}</p>
         <p><strong>Total Notes:</strong> ${notes.length}</p>
     </div>
-    ${notes.map((note, index) => `
+    ${notes.map((note, index) => {
+        const hasScreenshot = noteScreenshots[note.id];
+        return `
         <div class="note">
             <div class="timestamp">
                 ${index + 1}. ${note.type === 'free' || note.timestamp === null ? '[NOTE]' : `[${note.timestamp}]`}
             </div>
+            ${hasScreenshot ? `<img src="${hasScreenshot}" alt="Video screenshot at ${note.timestamp}" class="screenshot">` : ''}
             <div class="note-text">${note.text}</div>
         </div>
-    `).join('')}
+        `;
+    }).join('')}
 </body>
 </html>`;
 
@@ -660,7 +929,7 @@
 
             setTimeout(() => {
                 printWindow.print();
-            }, 250);
+            }, 500);
         });
 
         // Load session
@@ -676,6 +945,7 @@
                     try {
                         const session = JSON.parse(event.target.result);
                         notes = session.notes || [];
+                        noteScreenshots = session.screenshots || {};
                         renderNotes();
 
                         infoMessage.textContent = `Loaded session from ${new Date(session.exportDate).toLocaleString()}. Video: ${session.videoFileName}`;
