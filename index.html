@@ -15,18 +15,263 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #000;
             color: #fff;
-            padding: 20px;
+            padding: 0;
             line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Page visibility */
+        .page-hidden {
+            display: none !important;
+        }
+
+        .page-visible {
+            display: flex !important;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Landing Page Styles */
+        #landingPage {
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .landing-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-section h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .hero-section p {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 0;
+        }
+
+        .landing-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .landing-card h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .drop-zone {
+            border: 2px dashed #444;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            background: #111;
+        }
+
+        .drop-zone:hover {
+            border-color: #666;
+            background: #1a1a1a;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #fff;
+            background: #222;
+            transform: scale(1.02);
+        }
+
+        .drop-zone-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .drop-zone-text {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .drop-zone-subtext {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .upload-btn {
+            width: 100%;
+            padding: 12px 24px;
+            font-size: 15px;
+            margin-bottom: 0;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: #333;
+        }
+
+        .divider span {
+            background: #000;
+            padding: 0 15px;
+            position: relative;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .session-section {
+            text-align: center;
+        }
+
+        .load-session-btn {
+            width: 100%;
+            padding: 12px 24px;
+            font-size: 15px;
+            background: transparent;
+            border: 1px solid #444;
+            color: #fff;
+        }
+
+        .load-session-btn:hover {
+            background: #1a1a1a;
+            border-color: #666;
+        }
+
+        .recent-sessions {
+            margin-top: 20px;
+        }
+
+        .recent-sessions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .recent-sessions h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #888;
+        }
+
+        .clear-history-btn {
+            background: transparent;
+            color: #666;
+            padding: 4px 8px;
+            font-size: 12px;
+            border: 1px solid #333;
+        }
+
+        .clear-history-btn:hover {
+            color: #fff;
+            border-color: #444;
+        }
+
+        .recent-session-item {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .recent-session-item:hover {
+            background: #1a1a1a;
+            border-color: #444;
+        }
+
+        .recent-session-name {
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .recent-session-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #555;
+            font-size: 13px;
+            padding: 20px;
+        }
+
+        /* Note-Taking Page Styles */
+        #noteTakingPage {
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .app-header {
+            background: #1a1a1a;
+            border-bottom: 1px solid #333;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .app-header-filename {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .new-session-btn {
+            padding: 8px 16px;
+            font-size: 13px;
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 650px;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             align-items: start;
-            min-height: calc(100vh - 40px);
+            padding: 20px;
+            flex: 1;
         }
 
         .panel {
@@ -40,13 +285,12 @@
             grid-column: 1;
             display: flex;
             flex-direction: column;
-            min-height: calc(100vh - 40px);
         }
 
         .video-panel {
             grid-column: 2;
             position: sticky;
-            top: 20px;
+            top: 0;
             align-self: start;
         }
 
@@ -156,7 +400,7 @@
             overflow-y: auto;
             padding-right: 10px;
             margin-top: 15px;
-            max-height: calc(100vh - 350px);
+            max-height: 500px;
         }
 
         .notes-list::-webkit-scrollbar {
@@ -373,10 +617,9 @@
             background: #aaa;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1000px) {
             .container {
                 grid-template-columns: 1fr;
-                min-height: auto;
             }
 
             .video-panel {
@@ -384,99 +627,157 @@
                 top: 0;
             }
 
-            .notes-panel {
-                min-height: auto;
-            }
-
             .notes-list {
-                max-height: 600px;
+                max-height: 400px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="panel video-panel">
-            <h2>Video & Transcript</h2>
-
-            <div class="upload-section">
-                <label for="videoFile">Upload Video:</label>
-                <input type="file" id="videoFile" accept="video/*">
-
-                <label for="transcriptFile">Upload Transcript (JSON):</label>
-                <input type="file" id="transcriptFile" accept=".json">
+    <!-- Landing Page -->
+    <div id="landingPage" class="page-visible">
+        <div class="landing-container">
+            <div class="hero-section">
+                <h1>Video Note Taker</h1>
+                <p>Capture timestamped notes while watching videos</p>
             </div>
 
-            <video id="videoPlayer" controls></video>
-
-            <div class="video-timeline-markers" id="timelineMarkers"></div>
-
-            <div class="info-message" id="infoMessage">
-                Upload a video and its transcript to get started.
+            <div class="landing-card">
+                <h3>Upload Video</h3>
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-icon">📹</div>
+                    <div class="drop-zone-text">Drag & drop your video here</div>
+                    <div class="drop-zone-subtext">Supports MP4, MOV, AVI, MKV, and more</div>
+                </div>
+                <input type="file" id="landingVideoFile" accept="video/*" style="display: none;">
+                <button class="upload-btn" id="uploadVideoBtn">Choose Video File</button>
             </div>
 
-            <div class="export-section">
-                <button id="exportBtn" disabled>Export JSON</button>
-                <button id="exportPdfBtn" disabled>Export PDF</button>
-                <button id="loadBtn">Load Session</button>
-                <input type="file" id="loadFile" accept=".json" style="display: none;">
-            </div>
-        </div>
-
-        <div class="panel notes-panel">
-            <div class="notes-header">
-                <h2>Notes</h2>
-                <span class="notes-count" id="notesCount">0 notes</span>
+            <div class="divider">
+                <span>OR</span>
             </div>
 
-            <div class="note-input-section">
-                <div class="current-time" id="currentTime">Current time: 00:00:00</div>
+            <div class="landing-card">
+                <h3>Load Existing Session</h3>
+                <div class="session-section">
+                    <button class="load-session-btn" id="landingLoadBtn">Load Session File</button>
+                    <input type="file" id="landingSessionFile" accept=".json" style="display: none;">
+                </div>
 
-                <textarea
-                    class="note-input"
-                    id="noteInput"
-                    placeholder="Type your note here..."
-                    disabled
-                ></textarea>
-
-                <div class="button-group">
-                    <button id="addNoteBtn" disabled>Add Note at Current Time</button>
-                    <button id="addFreeNoteBtn" disabled>Add Note (No Timestamp)</button>
+                <div class="recent-sessions" id="recentSessions">
+                    <div class="recent-sessions-header">
+                        <h4>Recent Sessions</h4>
+                        <button class="clear-history-btn" id="clearHistoryBtn">Clear</button>
+                    </div>
+                    <div id="recentSessionsList">
+                        <div class="empty-state">No recent sessions</div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="notes-list" id="notesList"></div>
+    <!-- Note-Taking Page -->
+    <div id="noteTakingPage" class="page-hidden">
+        <div class="app-header">
+            <div class="app-header-title">Video Note Taker</div>
+            <div class="app-header-filename" id="headerFilename">No video loaded</div>
+            <button class="new-session-btn" id="newSessionBtn">New Session</button>
+        </div>
+
+        <div class="container">
+            <div class="panel notes-panel">
+                <div class="notes-header">
+                    <h2>Notes</h2>
+                    <span class="notes-count" id="notesCount">0 notes</span>
+                </div>
+
+                <div class="note-input-section">
+                    <div class="current-time" id="currentTime">Current time: 00:00:00</div>
+
+                    <textarea
+                        class="note-input"
+                        id="noteInput"
+                        placeholder="Type your note here..."
+                    ></textarea>
+
+                    <div class="button-group">
+                        <button id="addNoteBtn">Add Note at Current Time</button>
+                        <button id="addFreeNoteBtn">Add Note (No Timestamp)</button>
+                    </div>
+                </div>
+
+                <div class="notes-list" id="notesList"></div>
+            </div>
+
+            <div class="panel video-panel">
+                <h2>Video</h2>
+
+                <video id="videoPlayer" controls></video>
+
+                <div class="video-timeline-markers" id="timelineMarkers"></div>
+
+                <div class="export-section">
+                    <button id="exportBtn">Export JSON</button>
+                    <button id="exportPdfBtn">Export PDF</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         // State
-        let transcript = null;
         let notes = [];
         let videoFile = null;
-        let transcriptFileName = null;
         let noteScreenshots = {}; // Store screenshots keyed by note ID
+        let currentActiveNoteId = null;
+        let autoSaveInterval = null;
+        let hasUnsavedChanges = false;
+        let pendingSessionData = null; // For session loading flow
 
-        // Elements
+        // Page Elements
+        const landingPage = document.getElementById('landingPage');
+        const noteTakingPage = document.getElementById('noteTakingPage');
+
+        // Landing Page Elements
+        const dropZone = document.getElementById('dropZone');
+        const landingVideoFile = document.getElementById('landingVideoFile');
+        const uploadVideoBtn = document.getElementById('uploadVideoBtn');
+        const landingLoadBtn = document.getElementById('landingLoadBtn');
+        const landingSessionFile = document.getElementById('landingSessionFile');
+        const recentSessionsList = document.getElementById('recentSessionsList');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+        // Note-Taking Page Elements
         const videoPlayer = document.getElementById('videoPlayer');
-        const videoFileInput = document.getElementById('videoFile');
-        const transcriptFileInput = document.getElementById('transcriptFile');
         const noteInput = document.getElementById('noteInput');
         const addNoteBtn = document.getElementById('addNoteBtn');
         const addFreeNoteBtn = document.getElementById('addFreeNoteBtn');
         const notesList = document.getElementById('notesList');
         const exportBtn = document.getElementById('exportBtn');
         const exportPdfBtn = document.getElementById('exportPdfBtn');
-        const loadBtn = document.getElementById('loadBtn');
-        const loadFileInput = document.getElementById('loadFile');
         const currentTimeDisplay = document.getElementById('currentTime');
-        const infoMessage = document.getElementById('infoMessage');
         const notesCount = document.getElementById('notesCount');
         const timelineMarkers = document.getElementById('timelineMarkers');
+        const headerFilename = document.getElementById('headerFilename');
+        const newSessionBtn = document.getElementById('newSessionBtn');
 
-        let currentActiveNoteId = null;
+        // ===== PAGE TRANSITION FUNCTIONS =====
+        function showLandingPage() {
+            landingPage.classList.remove('page-hidden');
+            landingPage.classList.add('page-visible');
+            noteTakingPage.classList.remove('page-visible');
+            noteTakingPage.classList.add('page-hidden');
+        }
 
-        // Format milliseconds to HH:MM:SS
+        function showNoteTakingPage() {
+            landingPage.classList.remove('page-visible');
+            landingPage.classList.add('page-hidden');
+            noteTakingPage.classList.remove('page-hidden');
+            noteTakingPage.classList.add('page-visible');
+        }
+
+        // ===== UTILITY FUNCTIONS =====
         function formatTime(ms) {
             const totalSeconds = Math.floor(ms / 1000);
             const hours = Math.floor(totalSeconds / 3600);
@@ -499,6 +800,242 @@
                 resolve(dataUrl);
             });
         }
+
+        // ===== LANDING PAGE FUNCTIONS =====
+
+        // Handle video upload
+        function handleVideoUpload(file) {
+            if (!file) return;
+
+            videoFile = file;
+            const url = URL.createObjectURL(file);
+            videoPlayer.src = url;
+
+            headerFilename.textContent = file.name;
+
+            // If we have pending session data, load it now
+            if (pendingSessionData) {
+                loadSessionData(pendingSessionData);
+                pendingSessionData = null;
+            }
+
+            showNoteTakingPage();
+            startAutoSave();
+        }
+
+        // Drag and drop handlers
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('video/')) {
+                handleVideoUpload(file);
+            } else {
+                alert('Please drop a valid video file');
+            }
+        });
+
+        // Upload button click
+        uploadVideoBtn.addEventListener('click', () => {
+            landingVideoFile.click();
+        });
+
+        landingVideoFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleVideoUpload(file);
+            }
+        });
+
+        // Drop zone click
+        dropZone.addEventListener('click', () => {
+            landingVideoFile.click();
+        });
+
+        // Load session button
+        landingLoadBtn.addEventListener('click', () => {
+            landingSessionFile.click();
+        });
+
+        landingSessionFile.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const sessionData = JSON.parse(event.target.result);
+
+                    // Store session data and prompt for video
+                    pendingSessionData = sessionData;
+
+                    // Prompt user to upload video
+                    alert(`Session loaded! Now please upload the video file:\n${sessionData.videoFileName}`);
+                    landingVideoFile.click();
+
+                } catch (error) {
+                    alert('Error loading session file: ' + error.message);
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Load session data into the app
+        function loadSessionData(sessionData) {
+            notes = sessionData.notes || [];
+            noteScreenshots = sessionData.screenshots || {};
+            renderNotes();
+
+            // Add to recent sessions
+            addToRecentSessions(sessionData);
+        }
+
+        // ===== RECENT SESSIONS MANAGEMENT =====
+
+        function getRecentSessions() {
+            const sessions = localStorage.getItem('recentSessions');
+            return sessions ? JSON.parse(sessions) : [];
+        }
+
+        function saveRecentSessions(sessions) {
+            localStorage.setItem('recentSessions', JSON.stringify(sessions));
+        }
+
+        function addToRecentSessions(sessionData) {
+            let sessions = getRecentSessions();
+
+            const newSession = {
+                id: Date.now(),
+                sessionName: `Session ${new Date().toLocaleDateString()}`,
+                videoName: sessionData.videoFileName || (videoFile ? videoFile.name : 'Unknown'),
+                date: new Date().toISOString(),
+                noteCount: (sessionData.notes || notes).length,
+                lastModified: new Date().toISOString(),
+                data: sessionData
+            };
+
+            // Remove duplicates and add new session at the beginning
+            sessions = sessions.filter(s => s.videoName !== newSession.videoName);
+            sessions.unshift(newSession);
+
+            // Keep only last 5 sessions
+            sessions = sessions.slice(0, 5);
+
+            saveRecentSessions(sessions);
+            renderRecentSessions();
+        }
+
+        function renderRecentSessions() {
+            const sessions = getRecentSessions();
+
+            if (sessions.length === 0) {
+                recentSessionsList.innerHTML = '<div class="empty-state">No recent sessions</div>';
+                return;
+            }
+
+            recentSessionsList.innerHTML = sessions.map(session => `
+                <div class="recent-session-item" data-session-id="${session.id}">
+                    <div class="recent-session-name">${session.videoName}</div>
+                    <div class="recent-session-meta">${session.noteCount} notes • ${new Date(session.date).toLocaleDateString()}</div>
+                </div>
+            `).join('');
+
+            // Add click handlers
+            document.querySelectorAll('.recent-session-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const sessionId = parseInt(item.getAttribute('data-session-id'));
+                    const session = sessions.find(s => s.id === sessionId);
+                    if (session) {
+                        pendingSessionData = session.data;
+                        alert(`Loading session for:\n${session.videoName}\n\nPlease upload the video file.`);
+                        landingVideoFile.click();
+                    }
+                });
+            });
+        }
+
+        clearHistoryBtn.addEventListener('click', () => {
+            if (confirm('Clear all recent sessions?')) {
+                localStorage.removeItem('recentSessions');
+                renderRecentSessions();
+            }
+        });
+
+        // ===== NEW SESSION BUTTON =====
+
+        newSessionBtn.addEventListener('click', () => {
+            if (hasUnsavedChanges && notes.length > 0) {
+                if (!confirm('You have unsaved changes. Are you sure you want to start a new session?')) {
+                    return;
+                }
+            }
+
+            // Reset state
+            notes = [];
+            noteScreenshots = {};
+            videoFile = null;
+            currentActiveNoteId = null;
+            hasUnsavedChanges = false;
+            pendingSessionData = null;
+
+            // Stop auto-save
+            if (autoSaveInterval) {
+                clearInterval(autoSaveInterval);
+                autoSaveInterval = null;
+            }
+
+            // Clear video
+            videoPlayer.src = '';
+            headerFilename.textContent = 'No video loaded';
+
+            // Show landing page
+            showLandingPage();
+        });
+
+        // ===== AUTO-SAVE FUNCTIONALITY =====
+
+        function startAutoSave() {
+            if (autoSaveInterval) {
+                clearInterval(autoSaveInterval);
+            }
+
+            autoSaveInterval = setInterval(() => {
+                if (notes.length > 0 && videoFile) {
+                    const autoSaveData = {
+                        videoFileName: videoFile.name,
+                        notes: notes,
+                        screenshots: noteScreenshots,
+                        lastSaved: new Date().toISOString()
+                    };
+                    localStorage.setItem('autoSave', JSON.stringify(autoSaveData));
+                    console.log('Auto-saved session');
+                }
+            }, 30000); // Every 30 seconds
+        }
+
+        // ===== INITIALIZATION =====
+
+        // Load recent sessions on page load
+        renderRecentSessions();
+
+        // Warn before leaving with unsaved changes
+        window.addEventListener('beforeunload', (e) => {
+            if (hasUnsavedChanges && notes.length > 0) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
 
         // Update current time display and highlight active note
         videoPlayer.addEventListener('timeupdate', () => {
@@ -567,50 +1104,6 @@
             }
         }
 
-        // Handle video file upload
-        videoFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                videoFile = file;
-                const url = URL.createObjectURL(file);
-                videoPlayer.src = url;
-                checkReady();
-            }
-        });
-
-        // Handle transcript file upload
-        transcriptFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                transcriptFileName = file.name;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    try {
-                        transcript = JSON.parse(event.target.result);
-                        checkReady();
-                    } catch (error) {
-                        alert('Error parsing transcript JSON file');
-                        console.error(error);
-                    }
-                };
-                reader.readAsText(file);
-            }
-        });
-
-        // Check if both files are loaded
-        function checkReady() {
-            if (videoFile && transcript) {
-                noteInput.disabled = false;
-                addNoteBtn.disabled = false;
-                addFreeNoteBtn.disabled = false;
-                exportBtn.disabled = false;
-                exportPdfBtn.disabled = false;
-                infoMessage.textContent = 'Ready! Click on the video timeline or use the controls, then add notes.';
-                infoMessage.style.background = '#1a3a1a';
-                infoMessage.style.borderColor = '#2a4a2a';
-            }
-        }
-
         // Add note with timestamp
         addNoteBtn.addEventListener('click', async () => {
             const noteText = noteInput.value.trim();
@@ -648,6 +1141,7 @@
             });
 
             noteInput.value = '';
+            hasUnsavedChanges = true;
             renderNotes();
             noteInput.focus();
         });
@@ -680,6 +1174,7 @@
             });
 
             noteInput.value = '';
+            hasUnsavedChanges = true;
             renderNotes();
             noteInput.focus();
         });
@@ -821,7 +1316,6 @@
         exportBtn.addEventListener('click', () => {
             const session = {
                 videoFileName: videoFile.name,
-                transcriptFileName: transcriptFileName,
                 notes: notes,
                 screenshots: noteScreenshots,
                 exportDate: new Date().toISOString()
@@ -834,6 +1328,10 @@
             a.download = `notes_${videoFile.name.replace(/\.[^/.]+$/, '')}_${Date.now()}.json`;
             a.click();
             URL.revokeObjectURL(url);
+
+            // Mark as saved and add to recent sessions
+            hasUnsavedChanges = false;
+            addToRecentSessions(session);
         });
 
         // Export as PDF
@@ -930,34 +1428,9 @@
             setTimeout(() => {
                 printWindow.print();
             }, 500);
-        });
 
-        // Load session
-        loadBtn.addEventListener('click', () => {
-            loadFileInput.click();
-        });
-
-        loadFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    try {
-                        const session = JSON.parse(event.target.result);
-                        notes = session.notes || [];
-                        noteScreenshots = session.screenshots || {};
-                        renderNotes();
-
-                        infoMessage.textContent = `Loaded session from ${new Date(session.exportDate).toLocaleString()}. Video: ${session.videoFileName}`;
-                        infoMessage.style.background = '#1a2a3a';
-                        infoMessage.style.borderColor = '#2a3a4a';
-                    } catch (error) {
-                        alert('Error loading session file');
-                        console.error(error);
-                    }
-                };
-                reader.readAsText(file);
-            }
+            // Mark as saved (PDF export is considered a save action)
+            hasUnsavedChanges = false;
         });
 
         // Allow Enter key to add note
