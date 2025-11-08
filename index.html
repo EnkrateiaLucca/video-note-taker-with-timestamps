@@ -1480,95 +1480,104 @@
             const title = videoFile ? videoFile.name : 'Video Notes';
             const dateStr = new Date().toLocaleDateString();
 
+            // Build notes HTML
+            let notesHtml = '';
+            notes.forEach((note, index) => {
+                const hasScreenshot = noteScreenshots[note.id];
+                const timestampLabel = note.type === 'free' || note.timestamp === null ? '[NOTE]' : '[' + note.timestamp + ']';
+
+                notesHtml += '<div class="note">';
+                notesHtml += '<div class="timestamp">' + (index + 1) + '. ' + timestampLabel + '</div>';
+
+                if (hasScreenshot) {
+                    notesHtml += '<img src="' + hasScreenshot + '" alt="Video screenshot" class="screenshot">';
+                }
+
+                notesHtml += '<div class="note-text">' + note.text + '</div>';
+                notesHtml += '</div>';
+            });
+
             // Create a simple HTML for PDF generation with screenshots
-            const htmlContent = `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>${title}</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        h1 {
-            border-bottom: 3px solid #000;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .meta {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-        .note {
-            margin-bottom: 30px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            page-break-inside: avoid;
-        }
-        .timestamp {
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        .screenshot {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .note-text {
-            color: #333;
-            margin-top: 10px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        @media print {
-            .note {
-                page-break-inside: avoid;
-            }
-        }
-    </style>
-</head>
-<body>
-    <h1>VIDEO NOTES</h1>
-    <div class="meta">
-        <p><strong>Video:</strong> ${videoFile ? videoFile.name : 'N/A'}</p>
-        <p><strong>Date:</strong> ${dateStr}</p>
-        <p><strong>Total Notes:</strong> ${notes.length}</p>
-    </div>
-    ${notes.map((note, index) => {
-        const hasScreenshot = noteScreenshots[note.id];
-        return `
-        <div class="note">
-            <div class="timestamp">
-                ${index + 1}. ${note.type === 'free' || note.timestamp === null ? '[NOTE]' : `[${note.timestamp}]`}
-            </div>
-            ${hasScreenshot ? `<img src="${hasScreenshot}" alt="Video screenshot at ${note.timestamp}" class="screenshot">` : ''}
-            <div class="note-text">${note.text}</div>
-        </div>
-        `;
-    }).join('')}
-</body>
-</html>`;
+            const htmlContent = '<!DOCTYPE html>' +
+'<html>' +
+'<head>' +
+'    <meta charset="UTF-8">' +
+'    <title>' + title + '</title>' +
+'    <style>' +
+'        body {' +
+'            font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif;' +
+'            max-width: 800px;' +
+'            margin: 40px auto;' +
+'            padding: 20px;' +
+'            line-height: 1.6;' +
+'        }' +
+'        h1 {' +
+'            border-bottom: 3px solid #000;' +
+'            padding-bottom: 10px;' +
+'            margin-bottom: 20px;' +
+'        }' +
+'        .meta {' +
+'            color: #666;' +
+'            margin-bottom: 30px;' +
+'            font-size: 14px;' +
+'        }' +
+'        .note {' +
+'            margin-bottom: 30px;' +
+'            padding: 15px;' +
+'            border: 1px solid #ddd;' +
+'            border-radius: 4px;' +
+'            page-break-inside: avoid;' +
+'        }' +
+'        .timestamp {' +
+'            font-weight: bold;' +
+'            color: #000;' +
+'            margin-bottom: 10px;' +
+'            font-size: 16px;' +
+'        }' +
+'        .screenshot {' +
+'            width: 100%;' +
+'            max-width: 600px;' +
+'            height: auto;' +
+'            margin: 10px 0;' +
+'            border: 1px solid #ccc;' +
+'            border-radius: 4px;' +
+'        }' +
+'        .note-text {' +
+'            color: #333;' +
+'            margin-top: 10px;' +
+'            font-size: 14px;' +
+'            line-height: 1.5;' +
+'        }' +
+'        @media print {' +
+'            .note {' +
+'                page-break-inside: avoid;' +
+'            }' +
+'        }' +
+'    </style>' +
+'</head>' +
+'<body>' +
+'    <h1>VIDEO NOTES</h1>' +
+'    <div class="meta">' +
+'        <p><strong>Video:</strong> ' + (videoFile ? videoFile.name : 'N/A') + '</p>' +
+'        <p><strong>Date:</strong> ' + dateStr + '</p>' +
+'        <p><strong>Total Notes:</strong> ' + notes.length + '</p>' +
+'    </div>' +
+    notesHtml +
+'</body>' +
+'</html>';
 
             // Open in new window for printing to PDF
             const printWindow = window.open('', '_blank');
-            printWindow.document.write(htmlContent);
-            printWindow.document.close();
+            if (printWindow) {
+                printWindow.document.write(htmlContent);
+                printWindow.document.close();
 
-            setTimeout(() => {
-                printWindow.print();
-            }, 500);
+                setTimeout(() => {
+                    printWindow.print();
+                }, 500);
+            } else {
+                alert('Please allow pop-ups to export PDF');
+            }
 
             // Mark as saved (PDF export is considered a save action)
             hasUnsavedChanges = false;
