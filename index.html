@@ -1239,6 +1239,161 @@
             }
         }
 
+        /* Drawing Canvas */
+        .drawing-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .drawing-overlay.visible {
+            display: flex;
+        }
+
+        .drawing-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 95vw;
+            max-height: 95vh;
+            gap: 16px;
+        }
+
+        .drawing-toolbar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .drawing-canvas-wrapper {
+            position: relative;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .drawing-canvas {
+            display: block;
+            max-width: 90vw;
+            max-height: 70vh;
+            cursor: crosshair;
+        }
+
+        .drawing-canvas.eraser-mode {
+            cursor: cell;
+        }
+
+        .tool-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 0 12px;
+            border-right: 1px solid var(--border-primary);
+        }
+
+        .tool-group:last-child {
+            border-right: none;
+        }
+
+        .tool-group label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 0;
+            text-transform: none;
+            letter-spacing: 0;
+            font-weight: 600;
+        }
+
+        .tool-btn {
+            background: var(--bg-tertiary);
+            border: 1.5px solid var(--border-secondary);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tool-btn:hover {
+            background: var(--bg-elevated);
+            border-color: var(--border-accent);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .tool-btn.active {
+            background: var(--accent-gradient);
+            border-color: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .tool-btn::before {
+            display: none;
+        }
+
+        .color-picker {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--border-secondary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .color-picker:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-primary);
+        }
+
+        .line-width-input {
+            width: 80px;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1.5px solid var(--border-secondary);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .color-preset {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .color-preset:hover {
+            transform: scale(1.15);
+            border-color: white;
+        }
+
+        .color-preset.active {
+            border-color: white;
+            box-shadow: 0 0 0 2px var(--accent-primary);
+        }
+
         @media (max-width: 1000px) {
             .container {
                 grid-template-columns: 1fr;
@@ -1341,6 +1496,9 @@
                     <div class="button-group">
                         <button id="addNoteBtn">📝 Add Note at Current Time</button>
                         <button id="addFreeNoteBtn">📄 Add Note (No Timestamp)</button>
+                        <button id="openDrawingBtn" style="background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);">
+                            ✍️ Annotate Frame
+                        </button>
                     </div>
                 </div>
 
@@ -1376,6 +1534,55 @@
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- Drawing Canvas Overlay -->
+    <div class="drawing-overlay" id="drawingOverlay">
+        <div class="drawing-container">
+            <div class="drawing-toolbar">
+                <div class="tool-group">
+                    <button class="tool-btn active" id="penTool" data-tool="pen">
+                        ✏️ Pen
+                    </button>
+                    <button class="tool-btn" id="eraserTool" data-tool="eraser">
+                        🧹 Eraser
+                    </button>
+                </div>
+
+                <div class="tool-group">
+                    <label>Color:</label>
+                    <div class="color-preset active" style="background: #ff4444;" data-color="#ff4444"></div>
+                    <div class="color-preset" style="background: #44ff44;" data-color="#44ff44"></div>
+                    <div class="color-preset" style="background: #4444ff;" data-color="#4444ff"></div>
+                    <div class="color-preset" style="background: #ffff44;" data-color="#ffff44"></div>
+                    <div class="color-preset" style="background: #ff44ff;" data-color="#ff44ff"></div>
+                    <div class="color-preset" style="background: #ffffff;" data-color="#ffffff"></div>
+                    <input type="color" class="color-picker" id="colorPicker" value="#ff4444">
+                </div>
+
+                <div class="tool-group">
+                    <label>Size:</label>
+                    <input type="range" id="lineWidthSlider" class="line-width-input" min="1" max="20" value="3">
+                    <span id="lineWidthValue" style="color: var(--text-secondary); font-size: 13px; min-width: 30px;">3px</span>
+                </div>
+
+                <div class="tool-group">
+                    <button class="tool-btn" id="undoBtn">↶ Undo</button>
+                    <button class="tool-btn" id="clearCanvasBtn">🗑️ Clear</button>
+                </div>
+
+                <div class="tool-group">
+                    <button class="tool-btn" id="saveDrawingBtn" style="background: var(--accent-gradient); color: white;">
+                        ✓ Save & Add Note
+                    </button>
+                    <button class="tool-btn" id="cancelDrawingBtn">✕ Cancel</button>
+                </div>
+            </div>
+
+            <div class="drawing-canvas-wrapper">
+                <canvas id="drawingCanvas" class="drawing-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
     <!-- Keyboard Shortcuts Overlay -->
     <div class="shortcuts-overlay" id="shortcutsOverlay">
         <div class="shortcuts-panel">
@@ -1406,6 +1613,10 @@
                 <div class="shortcut-item">
                     <span class="shortcut-description">Focus Note Input</span>
                     <span class="shortcut-key">N</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-description">Annotate Current Frame</span>
+                    <span class="shortcut-key">A</span>
                 </div>
             </div>
 
@@ -1508,6 +1719,265 @@
             }, 3000);
         }
 
+        // ===== DRAWING CANVAS =====
+        const drawingOverlay = document.getElementById('drawingOverlay');
+        const drawingCanvas = document.getElementById('drawingCanvas');
+        const ctx = drawingCanvas.getContext('2d');
+        const openDrawingBtn = document.getElementById('openDrawingBtn');
+        const saveDrawingBtn = document.getElementById('saveDrawingBtn');
+        const cancelDrawingBtn = document.getElementById('cancelDrawingBtn');
+        const penTool = document.getElementById('penTool');
+        const eraserTool = document.getElementById('eraserTool');
+        const colorPicker = document.getElementById('colorPicker');
+        const lineWidthSlider = document.getElementById('lineWidthSlider');
+        const lineWidthValue = document.getElementById('lineWidthValue');
+        const undoBtn = document.getElementById('undoBtn');
+        const clearCanvasBtn = document.getElementById('clearCanvasBtn');
+
+        let drawingState = {
+            isDrawing: false,
+            currentTool: 'pen',
+            currentColor: '#ff4444',
+            lineWidth: 3,
+            undoStack: []
+        };
+
+        let currentVideoFrame = null;
+
+        // Initialize drawing canvas with video frame
+        async function openDrawingCanvas() {
+            if (!videoPlayer.src) {
+                showToast('Please load a video first', 'error');
+                return;
+            }
+
+            // Capture current video frame
+            const screenshot = await captureVideoScreenshot();
+            if (!screenshot) {
+                showToast('Failed to capture video frame', 'error');
+                return;
+            }
+
+            currentVideoFrame = screenshot;
+
+            // Load image and set canvas size
+            const img = new Image();
+            img.onload = () => {
+                drawingCanvas.width = img.width;
+                drawingCanvas.height = img.height;
+
+                // Draw the video frame as background
+                ctx.drawImage(img, 0, 0);
+
+                // Save initial state for undo
+                saveCanvasState();
+            };
+            img.src = screenshot;
+
+            // Show drawing overlay
+            drawingOverlay.classList.add('visible');
+        }
+
+        // Save canvas state for undo
+        function saveCanvasState() {
+            drawingState.undoStack.push(drawingCanvas.toDataURL());
+            // Limit undo stack to 20 states
+            if (drawingState.undoStack.length > 20) {
+                drawingState.undoStack.shift();
+            }
+        }
+
+        // Undo last action
+        function undoDrawing() {
+            if (drawingState.undoStack.length > 1) {
+                drawingState.undoStack.pop(); // Remove current state
+                const previousState = drawingState.undoStack[drawingState.undoStack.length - 1];
+
+                const img = new Image();
+                img.onload = () => {
+                    ctx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = previousState;
+            }
+        }
+
+        // Clear canvas
+        function clearCanvas() {
+            if (currentVideoFrame) {
+                const img = new Image();
+                img.onload = () => {
+                    ctx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+                    ctx.drawImage(img, 0, 0);
+                    drawingState.undoStack = [drawingCanvas.toDataURL()];
+                };
+                img.src = currentVideoFrame;
+            }
+        }
+
+        // Drawing event handlers
+        let lastX = 0;
+        let lastY = 0;
+
+        function startDrawing(e) {
+            drawingState.isDrawing = true;
+            const rect = drawingCanvas.getBoundingClientRect();
+            lastX = (e.clientX - rect.left) * (drawingCanvas.width / rect.width);
+            lastY = (e.clientY - rect.top) * (drawingCanvas.height / rect.height);
+        }
+
+        function draw(e) {
+            if (!drawingState.isDrawing) return;
+
+            const rect = drawingCanvas.getBoundingClientRect();
+            const currentX = (e.clientX - rect.left) * (drawingCanvas.width / rect.width);
+            const currentY = (e.clientY - rect.top) * (drawingCanvas.height / rect.height);
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(currentX, currentY);
+
+            if (drawingState.currentTool === 'pen') {
+                ctx.strokeStyle = drawingState.currentColor;
+                ctx.globalCompositeOperation = 'source-over';
+            } else if (drawingState.currentTool === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out';
+            }
+
+            ctx.lineWidth = drawingState.lineWidth;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+
+            lastX = currentX;
+            lastY = currentY;
+        }
+
+        function stopDrawing() {
+            if (drawingState.isDrawing) {
+                drawingState.isDrawing = false;
+                saveCanvasState();
+            }
+        }
+
+        // Event listeners for drawing
+        drawingCanvas.addEventListener('mousedown', startDrawing);
+        drawingCanvas.addEventListener('mousemove', draw);
+        drawingCanvas.addEventListener('mouseup', stopDrawing);
+        drawingCanvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch support
+        drawingCanvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            drawingCanvas.dispatchEvent(mouseEvent);
+        });
+
+        drawingCanvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            drawingCanvas.dispatchEvent(mouseEvent);
+        });
+
+        drawingCanvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const mouseEvent = new MouseEvent('mouseup', {});
+            drawingCanvas.dispatchEvent(mouseEvent);
+        });
+
+        // Tool switching
+        penTool.addEventListener('click', () => {
+            drawingState.currentTool = 'pen';
+            penTool.classList.add('active');
+            eraserTool.classList.remove('active');
+            drawingCanvas.classList.remove('eraser-mode');
+        });
+
+        eraserTool.addEventListener('click', () => {
+            drawingState.currentTool = 'eraser';
+            eraserTool.classList.add('active');
+            penTool.classList.remove('active');
+            drawingCanvas.classList.add('eraser-mode');
+        });
+
+        // Color selection
+        document.querySelectorAll('.color-preset').forEach(preset => {
+            preset.addEventListener('click', () => {
+                const color = preset.getAttribute('data-color');
+                drawingState.currentColor = color;
+                colorPicker.value = color;
+                document.querySelectorAll('.color-preset').forEach(p => p.classList.remove('active'));
+                preset.classList.add('active');
+            });
+        });
+
+        colorPicker.addEventListener('input', (e) => {
+            drawingState.currentColor = e.target.value;
+            document.querySelectorAll('.color-preset').forEach(p => p.classList.remove('active'));
+        });
+
+        // Line width
+        lineWidthSlider.addEventListener('input', (e) => {
+            drawingState.lineWidth = parseInt(e.target.value);
+            lineWidthValue.textContent = `${drawingState.lineWidth}px`;
+        });
+
+        // Button handlers
+        openDrawingBtn.addEventListener('click', openDrawingCanvas);
+
+        undoBtn.addEventListener('click', undoDrawing);
+        clearCanvasBtn.addEventListener('click', clearCanvas);
+
+        cancelDrawingBtn.addEventListener('click', () => {
+            drawingOverlay.classList.remove('visible');
+            drawingState.undoStack = [];
+        });
+
+        saveDrawingBtn.addEventListener('click', () => {
+            const annotatedImage = drawingCanvas.toDataURL();
+            const noteText = noteInput.value.trim() || 'Annotated frame';
+            const currentMs = Math.floor(videoPlayer.currentTime * 1000);
+            const noteId = Date.now();
+
+            const note = {
+                timestamp: formatTime(currentMs),
+                timestampMs: currentMs,
+                text: noteText,
+                id: noteId,
+                type: 'timestamped',
+                createdAt: noteId
+            };
+
+            // Save the annotated screenshot
+            noteScreenshots[noteId] = annotatedImage;
+
+            notes.push(note);
+            notes.sort((a, b) => {
+                if (a.timestampMs === b.timestampMs) {
+                    return a.createdAt - b.createdAt;
+                }
+                return a.timestampMs - b.timestampMs;
+            });
+
+            noteInput.value = '';
+            hasUnsavedChanges = true;
+            renderNotes();
+
+            // Close drawing overlay
+            drawingOverlay.classList.remove('visible');
+            drawingState.undoStack = [];
+
+            showToast(`Annotated note added at ${note.timestamp}`, 'success');
+        });
+
         // ===== KEYBOARD SHORTCUTS =====
         function toggleShortcuts() {
             const overlay = document.getElementById('shortcutsOverlay');
@@ -1543,6 +2013,13 @@
             if (e.key === 'n' && !isInputFocused) {
                 e.preventDefault();
                 noteInput.focus();
+                return;
+            }
+
+            // Open drawing canvas on 'A' (when not typing)
+            if (e.key === 'a' && !isInputFocused) {
+                e.preventDefault();
+                openDrawingBtn.click();
                 return;
             }
 
